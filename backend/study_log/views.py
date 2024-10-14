@@ -1,7 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 # Create your views here.
-from django.http import JsonResponse
-
-def health_check(request):
-    return JsonResponse({"status": "success", "message": "Django is running!"})
+def say_hello(request):
+    return render(request, 'hello.html')

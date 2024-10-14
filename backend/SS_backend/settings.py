@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'rest_framework'
+    'rest_framework',
+    'study_log'
 ]
 
 MIDDLEWARE = [
@@ -82,15 +83,15 @@ DATABASES = {
     }
 }
 
-# we need to edit this section so that our applcation can use the postgres database
+# # we need to edit this section so that our applcation can use the postgres database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'SS_database',
-#         'USER': 'our_username',
-#         'PASSWORD': 'our_password',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'NAME': 'studystraightTDB',         # Your PostgreSQL database name
+#         'USER': 'postgres',         # Your PostgreSQL username
+#         'PASSWORD': 'admin90210', # Your PostgreSQL password
+#         'HOST': '0.tcp.ngrok.io',       # Ngrok's public address
+#         'PORT': '18545',                # Ngrok's public port
 #     }
 # }
 
