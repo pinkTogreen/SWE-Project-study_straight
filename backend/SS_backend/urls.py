@@ -1,5 +1,5 @@
 """
-URL configuration for study_straight project.
+URL configuration for SS_backend project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -19,4 +19,12 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+]
+
+
+# from django.urls import path
+from study_log.views import health_check
+
+urlpatterns = [
+    path('health/', health_check, name='health_check'),
 ]

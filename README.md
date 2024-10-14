@@ -1,5 +1,34 @@
 # SWE-Project-study_straight
 
+[Project description] - TBA
+
+[setup and requirements]
+clone the project, open it in a sensible application of your choice
+you should have:
+    backend
+        SS_backend
+        study_log
+        task_calendar
+        user_management
+        db.sqlite3 -> eventually will be deleted once we fully set up PostgreSQL
+        manage.py
+    frontend
+        src
+        jsconfig.json
+        next.config.mjs
+        package-lock.json
+        package.json
+    .gitignore
+    README.md
+    run.ps1 -> allows you to run the server and app without having to manually change directories
+
+before you start, ensure you have the latest version of python and node.js installed
+python link:
+node.js link:
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
