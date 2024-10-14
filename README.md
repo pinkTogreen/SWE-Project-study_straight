@@ -12,6 +12,7 @@ you should have:
         user_management
         db.sqlite3 -> eventually will be deleted once we fully set up PostgreSQL
         manage.py
+        requirements.txt
     frontend
         src
         jsconfig.json
@@ -24,9 +25,9 @@ you should have:
 
 before you start, ensure you have the latest version of python and node.js installed
 
-python link:
+python link: https://www.python.org/downloads/
 
-node.js link:
+node.js link: https://nodejs.org/en/download/package-manager
 
 open a new terminal within the project directory, this can be done within the application you're using to open the workspace
 
@@ -42,7 +43,7 @@ python -m venv venv
 to run the virtual environment (also within the backend folder):
 venv/bin/activate -> this command requires that you're in the directory containing the virtual environment
 
-3) setup front end
+3) setup frontend
 you do not have the node modules installed for this project
 to install them, navigate to the frontend folder and call this command:
 npm install
