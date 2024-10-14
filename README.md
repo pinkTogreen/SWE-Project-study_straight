@@ -3,22 +3,39 @@
 [Project description] - TBA
 
 [setup and requirements]
+
 clone the project, open it in a sensible application of your choice
+
 you should have:
+
     backend
+
         SS_backend
+
         study_log
+
         task_calendar
+
         user_management
+
         db.sqlite3 -> eventually will be deleted once we fully set up PostgreSQL
+
         manage.py
+
         requirements.txt
+
     frontend
+
         src
+
         jsconfig.json
+
         next.config.mjs
+
         package-lock.json
+
         package.json
+
     .gitignore
     README.md
     run.ps1 -> allows you to run the server and app without having to manually change directories
@@ -32,30 +49,48 @@ node.js link: https://nodejs.org/en/download/package-manager
 open a new terminal within the project directory, this can be done within the application you're using to open the workspace
 
 1) run this command:
+
 cd backend
+
 pip install -r requirements.txt
 
 this allows you install all of the required modules for the django project
 
 2) start the virtual envionment (I'll probably add this to the executable file)
+
 within the backend folder, create your virtual environemnt:
-python -m venv venv
+
+virtualenv venv
+
 to run the virtual environment (also within the backend folder):
-venv/bin/activate -> this command requires that you're in the directory containing the virtual environment
+
+venv/Scripts/activate -> this command requires that you're in the directory containing the virtual environment
 
 3) setup frontend
+
 you do not have the node modules installed for this project
+
 to install them, navigate to the frontend folder and call this command:
+
 npm install
+
 this should install all of the required modules specified by the package.json files within the folder
 
+
 4) check if you've set up django and next.js 
+
 navigate to the project directory with this command:
+
 cd ..
+
 run the executable provided within the folder with:
+
 .\run
+
 note that run.ps1 is a powershell file, you are required to use powershell to run this executable
+
 howver, I'll try to make a new executable that can be run another terminal :-]
+
 
 
 
