@@ -84,16 +84,16 @@ DATABASES = {
 }
 
 # we need to edit this section so that our applcation can use the postgres database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'studystraightTDB',         # Your PostgreSQL database name
-        'USER': 'postgres',         # Your PostgreSQL username
-        'PASSWORD': 'admin90210', # Your PostgreSQL password
-        'HOST': '0.tcp.ngrok.io',       # Ngrok's public address
-        'PORT': '18545',                # Ngrok's public port
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'studystraightTDB',         # Your PostgreSQL database name
+#         'USER': 'postgres',         # Your PostgreSQL username
+#         'PASSWORD': 'admin90210', # Your PostgreSQL password
+#         'HOST': '6.tcp.ngrok.io',       # Ngrok's public address
+#         'PORT': '13807',                # Ngrok's public port
+#     }
+# }
 
 
 # Password validation
