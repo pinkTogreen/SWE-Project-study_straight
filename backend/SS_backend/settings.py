@@ -76,13 +76,6 @@ WSGI_APPLICATION = 'SS_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # we need to edit this section so that our applcation can use the postgres database
 # DATABASES = {
 #     'default': {
