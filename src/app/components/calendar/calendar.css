@@ -1,0 +1,38 @@
+/* styles/calendar.css
+
+/* Style for the entire calendar */
+.fc {
+    background-color: #f9f9f9; /* Change background color */
+    border: 1px solid #ccc; /* Add border */
+  }
+  
+  /* Style for the toolbar */
+  .fc-toolbar {
+    background-color: #007bff; /* Toolbar background color */
+    color: white; /* Toolbar text color */
+  }
+  
+  /* Style for day cells */
+  .fc-day {
+    background-color: #fff; /* Day cell background color */
+    border: 1px solid #e0e0e0; /* Day cell border */
+  }
+  
+  /* Highlight the current day */
+  .fc-today {
+    background-color: #ffeb3b; /* Highlight color for today's date */
+  }
+  
+  /* Style for events */
+  .fc-event {
+    background-color: #28a745; /* Event background color */
+    color: white; /* Event text color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Padding for events */
+  }
+  
+  /* Change cursor on hover over event */
+  .fc-event:hover {
+    cursor: pointer;
+    opacity: 0.8; /* Slightly transparent on hover */
+  }

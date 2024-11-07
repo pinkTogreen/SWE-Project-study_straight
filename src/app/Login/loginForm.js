@@ -1,18 +1,14 @@
 
-"use client"
+'use client'
 import { useState } from "react"
-import { signup } from "@/actions/action"
+import { login } from "@/actions/action"
 import styles from "./loginForm.css"
 import { useRouter } from 'next/navigation'
-import handleUserRequest from "../api/verify"
-
 
 //add a use state so that you can call a function when the submit button is clicked, 
-//ensure that the error message is only shown when
+//ensure that the error message is only shown after inputting bad data, and it's removed when the user begins entering new data
 
-
-
-export default function Home(){
+export default function Page(){
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -21,16 +17,10 @@ export default function Home(){
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = { username, password }; 
-
-        if (!username || !password) {
-            alert("Please complete both fields.");
-            return;
-        }
-        console.log("log");
-        let fail = await signup(username, password);
-
-        if(!fail)
-            router.push('/Dashboard');
+        
+        //right now there's nothing to move to a new page, but that will be dealt with
+        let response = await login(username, password);
+        console.log(response);
 
     }
 

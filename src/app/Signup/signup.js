@@ -1,14 +1,13 @@
+'use client'
 import { useState } from "react"
 import { signup } from "@/actions/action"
-import styles from "./loginForm.css"
 import { useRouter } from 'next/navigation'
-import handleUserRequest from "../api/verify"
+import handleSignup from "../../api/signup"
 
 
-export default function Home(){
+export default function Signup(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const router = useRouter();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -28,7 +27,12 @@ export default function Home(){
             <div className = "login-box">
 
                 <h2>Signup</h2>
-
+                {/* 
+                NOTES:
+                currently figuring this out, as the password textboxes take the same input at the same time
+                so when you're typing in one box, you're typing in the other at once
+                css looks wonky on the SignUp page
+                */}
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input 

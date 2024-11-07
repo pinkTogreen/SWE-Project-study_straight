@@ -5,8 +5,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: rgb(205,246,255);
-    --background: linear-gradient(50deg, rgba(205,246,255,1) 0%, rgba(232,239,241,1) 58%);
+    /* --background: rgb(205,246,255);
+    --background: linear-gradient(50deg, rgba(205,246,255,1) 0%, rgba(232,239,241,1) 58%); */
     --foreground: #000000;
   }
 }

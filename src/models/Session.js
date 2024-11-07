@@ -1,4 +1,4 @@
-//Specifies document contents for tasks
+//Specifies document contents for sessions
 import mongoose from 'mongoose'
 
 const taskSchema = new mongoose.Schema({
@@ -6,16 +6,17 @@ const taskSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	description: {
+	duration: {
 		type: String,
+        
 	},
     date: {
-        type: String,
-        required: true
+        date: {type: Int8Array}, //contains month, day, year
+        time: {type: Int8Array},
     },
     status:{
         type: String,
-        default: "Incomplete",
+        required: true,
     },
 })
 
