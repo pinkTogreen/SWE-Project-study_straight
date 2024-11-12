@@ -6,35 +6,22 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { addTask } from '@/actions/action';
+// import TaskInput from '../addTask/task';
 
 export default function Page() {
   const [openTask, setOpenTask] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
 
   const handleClick = (event) => {
-    console.log('date clicked: ' + event.dateStr);
-    setSelectedDate(event.dateStr); // Store the clicked date
-    setOpenTask(true); // Show the task input form
-  };
-
-  const task_handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = { title, desc, date: selectedDate };
-
-    if (!title) {
-      alert('Please enter a title.');
-      return;
+    console.log(event.dateStr);
+    if(selectedDate === event.dateStr){
+      setOpenTask(!openTask);
     }
-
-    // Add the task (replace with your own implementation)
-    await addTask(title, selectedDate, desc);
-
-    // Optionally, reset the form and close it
-    setTitle('');
-    setDesc('');
-    setOpenTask(false);
+    setSelectedDate(event.dateStr); // Store the clicked date
+    console.log(selectedDate); 
+    // Show the task input form
   };
 
   const getEvents = () => {
@@ -58,29 +45,80 @@ export default function Page() {
         />
         {openTask && (
           <div>
-            <h1>Add New Task for {selectedDate}</h1>
-            <form onSubmit={task_handleSubmit}>
-              <div>
-                <label>Title:</label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>Description:</label>
-                <input
-                  type="text"
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                />
-              </div>
-              <button type="submit">Add Task</button>
-            </form>
+            <TaskInput 
+            selectedDate={selectedDate}
+            isDisplayed={openTask}/>
           </div>
         )}
       </div>
     </div>
   );
+}
+
+//A function to add tasks is contained within the calendar page
+function TaskInput({selectedDate, isDisplayed}){
+  const [taskDetails, setTaskDetails] = useState({
+      title: '',
+      priority: 'MED',
+      description: '',
+      date: selectedDate || '',
+      completed: false,
+      userID: "test",
+      courseID: "test",
+    });
+  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setTaskDetails({ ...taskDetails, [name]: value });
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('Task details', taskDetails);
+      setOpenTask(false);
+    };
+
+  if(isDisplayed){
+  return(
+  <form onSubmit = {handleSubmit}>
+      <div>
+          <label>
+              Title:
+              <input
+                  type="text"
+                  name="title"
+                  value={taskDetails.title}
+                  onChange={handleChange}
+                  required
+              />
+          </label>
+      </div>
+
+      <div>
+          <label>Description</label>
+          <input
+              type="text"
+              name="description"
+              value={taskDetails.description}
+              onChange={handleChange}
+              required
+          />
+      </div>
+
+      <div>
+      <label>Priority:</label>
+      <select
+        name="priority"
+        value={taskDetails.priority}
+        onChange={handleChange}
+      >
+        <option value="LOW">Low</option>
+        <option value="MED">Medium</option>
+        <option value="HIGH">High</option>
+      </select>
+    </div>
+    <button type="submit">Save Task</button>
+  </form>
+  );
+  }
 }

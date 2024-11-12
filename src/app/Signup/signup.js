@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
-import { signup } from "@/actions/action"
 import { useRouter } from 'next/navigation'
+import { addAccount } from "@/actions/action"
 import handleSignup from "../../api/signup"
 
 
@@ -17,8 +17,7 @@ export default function Signup(){
             alert("Please complete both fields.");
             return;
         }
-        console.log("log");
-        let fail = await signup(username, password);
+        await addAccount(username, password);
 
     }
     

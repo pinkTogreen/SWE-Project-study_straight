@@ -2,6 +2,7 @@
 import checkInfo from '@/api/auth'
 import User from '@/models/User'
 import Task from '@/models/Task'
+import handleSignup from '@/api/signup'
 //import handleUserRequest from '@/app/api/verify'
 import { UNDERSCORE_NOT_FOUND_ROUTE } from 'next/dist/shared/lib/constants'
 //what the hell is this and where did it come from
@@ -21,6 +22,12 @@ export const addAccount = async (username, password) => {
 		username: username,
 		password: password,
 	}
+	let takenUser = handleSignup("GET", username);
+	if (takenUser.exists) {
+		return false; //user taken, signup failed
+	}
+	handleSignup("POST", userData);
+	return true; //successfully added account 
 }
 
 export const addTask = async(name, date, description) => {

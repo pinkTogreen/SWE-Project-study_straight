@@ -1,43 +1,48 @@
 import dbConnect from '@/lib/db'
+import Task from '@/models/Task';
 
 //updating tasks
 //deleting tasks
 //retrieving tasks
 
 export default async function handleUserRequest (req, userData){
-    await dbConnect(); //we can't rely on the same connection all the time, learning things as we go
+    /*
+    KINDS OF INPUT:
+    -"POST", an object, containing all required information from task
+    -"PUT" a piece of information to add or change, example {title: "new name"}
+    -"GET", a username to find all associated tasks with the person
+    -"DELETE", deleting an existing task, requires the exact information (object ID?)
+    */
+    await dbConnect();
 
-    if (req.method === 'GET') {
-        return await fetchUser(userData);
-    }
+    switch (req){
+        case "GET": //retrieving all tasks under a current user
+            return await fetch(userData); //needs an object ID to find all tasks of that user
+        case "POST": //adding a new task
+            return await add(userData);
+        case "PUT": //updating the task with the required information
+            return await update(userData);    
+        //we need to check which kind of information we want to update, and for which task
+        case "DELETE":
+            return await deleteTask(userData);
+        }
 
-    else if (req.method === 'POST'){
-        return await addUser(userData); //expects username and password
-    }
-
-    else if (req.method === 'PUT'){
-        //updating the task with the required information
-        //this one might be little harder... how can we determine what kind of information was entered?
-    }
-
-}
-
-async function fetchTasks(userData){ //this might want to take an ID associated with the task...
-    const user = await Task.findMany({id: userData});
-    // if userData.password matches the password in the database then they log in, return true
-    // if it does not, return false
-    //I suppose this would return the size of the json....
-    //if it's zero, then the user does not exist, if it's 1, then it exists
-    //what about, getting a size? a count?
 
 }
 
-async function addTask(userData){
-    //simply enters information into the database
-    //takes in form data
-    //and makes the user model
+async function fetchTasks(username){
+    const user = await Task.findMany({id: username});
+    return user;
+}       
+
+async function addTask(taskInfo){
+    //takes the entered object and turns it into a model which can be entered into the database
+    let newTask = new Task(taskInfo);
+    newTask.save();
 }
 
-//do we need something for changing the password?
-//how do people handle deleting accounts? do we even need to worry about that?
+async function deleteTask(taskInfo){ //it would be better to obtain the task ID instead? or...
+    //takes the entered object and turns it into a model which can be entered into the database
+    await Task.findByIdAndDelete(taskInfo);// what would this take, I suggest an object ID?
 
+}

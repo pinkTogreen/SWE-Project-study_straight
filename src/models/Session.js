@@ -1,23 +1,39 @@
-//Specifies document contents for sessions
+//specifies document contents for sessions
 import mongoose from 'mongoose'
 
-const taskSchema = new mongoose.Schema({
+const sessSchema = new mongoose.Schema({
 	title: {
 		type: String,
 		required: true,
 	},
-	duration: {
+	description: {
 		type: String,
-        
 	},
     date: {
-        date: {type: Int8Array}, //contains month, day, year
-        time: {type: Int8Array},
-    },
-    status:{
         type: String,
-        required: true,
+        required: true
+    },
+    duration: {
+		type: Number,
+	},
+    status:{ // Unsure if we should keep this
+        type: String,
+        enum: ['Incomplete', 'Completed'],
+        default: "Incomplete",
+    },
+    tasks: [ // What tasks are the user trying to complete during the session?
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Task', // Referencing the Task schema
+        },
+    ],
+    userId: { // Who is the session associated with?
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Referencing the Task schema
+    },
+    notes:{ //additonal notes of the session that the user might want to add
+        type: [String],
     },
 })
 
-export default mongoose.models.Task || mongoose.model('Task', taskSchema)
+export default mongoose.models.Session || mongoose.model('Session', sessSchema)

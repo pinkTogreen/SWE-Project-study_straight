@@ -3,9 +3,9 @@ import dbConnect from '@/lib/db'
 import User from '@/models/User'
 
 
-export default async function handleSignup (){
-    await dbConnect(); //we can't rely on the same connection all the time, learning things as we go
-    if (req === "GET") {//first we check if the username exists
+export default async function handleSignup (req, userData){
+    await dbConnect(); 
+    if (req === "GET") {//first we check if the username exists (expects a username)
         return await fetchUser(userData);
     }
     else if (req === 'POST') {//then we add the information to the database
@@ -15,8 +15,7 @@ export default async function handleSignup (){
 
 
 async function fetchUser(userData){
-    const user = await User.findOne({username: userData.username});
-    console.log(user);
+    const user = await User.findOne({username: userData});
     if (user) {//the username exists
         return {
             message: "This username already exists.",
@@ -34,9 +33,6 @@ async function fetchUser(userData){
 }
 
 async function addUser(userData){
-	let newAccount = new User({
-		"username": userData.username, 
-		"password": userData.password,
-	});
+	let newAccount = new User(userData);
 	newAccount.save();
 }

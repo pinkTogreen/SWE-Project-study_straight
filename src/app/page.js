@@ -2,23 +2,32 @@
 import LoginForm from "./Login/loginForm.js"
 import Signup from "./Signup/signup.js"
 import Calendar from "./components/calendar/calendar"
-import TaskInput from "./components/addTask/task"
-import handleSignup from "@/api/signup.js"
-import handleVerify from "@/api/auth.js"
+import TaskInput from "./components/addTask (MIGHT BE REMOVED)/task.js"
+import handleCourse from "@/api/course.js"
+// import handleSignup from "@/api/signup.js"
+// import handleVerify from "@/api/auth.js"
 
 export default function Home(){
-	// const testSignup = async () => {
-	// 	let response = await handleVerify({ username: "test", password: "pass"});
-	// }
+	const test = async () => {
+		const course = {
+			name: "CAP 3027",
+			description: "description test",
+			term: "Fall",
+			year: 2024,
+		}
+		let response = await handleCourse("POST", course);
+		console.log(response);
+	}
 
 	return(
 		<main>
-			{/* <button 
+			<button 
 			type = "submit"
-			onClick={testSignup}>test</button>
-			<Calendar/> */}
+			onClick={test}>test</button>
+			{/* <Calendar/> */}
 			{/* <LoginForm/> */}
-			<Signup/>
+			{/* <Signup/> */}
+			{/* <TaskInput/> */}
 		</main>
 	);
 }
