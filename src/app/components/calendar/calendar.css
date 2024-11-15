@@ -1,38 +1,140 @@
-/* styles/calendar.css
+/* Main layout containers */
+.container-main {
+    padding: 1rem;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
 
-/* Style for the entire calendar */
+.layout-container {
+    display: flex;
+    gap: 1rem;
+    height: calc(100vh - 2rem);
+}
+
+.calendar-container {
+    flex: 0 0 75%;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-wrapper {
+    height: 100%;
+}
+
+.form-container {
+    flex: 0 0 23%;
+    min-width: 250px;
+}
+
+.form-wrapper {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styles */
+.form-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.course-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    width: 100%;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    ring: 2px #3b82f6;
+}
+
+.submit-button {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #2563eb;
+}
+
+/* Calendar styles */
 .fc {
-    background-color: #f9f9f9; /* Change background color */
-    border: 1px solid #ccc; /* Add border */
-  }
-  
-  /* Style for the toolbar */
-  .fc-toolbar {
-    background-color: #007bff; /* Toolbar background color */
-    color: white; /* Toolbar text color */
-  }
-  
-  /* Style for day cells */
-  .fc-day {
-    background-color: #fff; /* Day cell background color */
-    border: 1px solid #e0e0e0; /* Day cell border */
-  }
-  
-  /* Highlight the current day */
-  .fc-today {
-    background-color: #ffeb3b; /* Highlight color for today's date */
-  }
-  
-  /* Style for events */
-  .fc-event {
-    background-color: #28a745; /* Event background color */
-    color: white; /* Event text color */
-    border-radius: 4px; /* Rounded corners */
-    padding: 5px; /* Padding for events */
-  }
-  
-  /* Change cursor on hover over event */
-  .fc-event:hover {
+    height: 100%;
+}
+
+.fc-header-toolbar {
+    padding: 1rem;
+    margin-bottom: 0.5rem !important;
+}
+
+.fc-toolbar-title {
+    font-size: 1.25rem !important;
+    font-weight: 600;
+}
+
+.fc-button {
+    background-color: #3b82f6 !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.fc-button:hover {
+    background-color: #2563eb !important;
+}
+
+.fc-day {
     cursor: pointer;
-    opacity: 0.8; /* Slightly transparent on hover */
-  }
+}
+
+.fc-day:hover {
+    background-color: #f3f4f6;
+}
+
+.fc-day-today {
+    background-color: #eff6ff !important;
+}
+
+.fc-day.selected-day {
+    background-color: #fff3e6 !important; /* Light orange */
+}
+
+.task-form {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}

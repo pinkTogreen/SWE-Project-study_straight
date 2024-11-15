@@ -1,7 +1,8 @@
-import connect from '@/lib/db'
-
 export async function register() {
-	await connect()
+	if (process.env.NEXT_RUNTIME === 'nodejs') {
+		const db = await import('./lib/db')
+		await db.default()
+	}
 }
 
 /*

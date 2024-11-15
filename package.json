@@ -14,7 +14,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "mongoose": "^8.7.3",
-    "next": "15.0.1",
+    "next": "^15.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

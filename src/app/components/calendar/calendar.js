@@ -1,124 +1,57 @@
 'use client'
 
-import styles from './calendar.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { addTask } from '@/actions/action';
-// import TaskInput from '../addTask/task';
+import './calendar.css';
 
-export default function Page() {
-  const [openTask, setOpenTask] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
+export default function Calendar({ onDateSelect }) {
+    const [selectedDate, setSelectedDate] = useState('');
+    const [calendarApi, setCalendarApi] = useState(null);
 
-  const handleClick = (event) => {
-    console.log(event.dateStr);
-    if(selectedDate === event.dateStr){
-      setOpenTask(!openTask);
-    }
-    setSelectedDate(event.dateStr); // Store the clicked date
-    console.log(selectedDate); 
-    // Show the task input form
-  };
+    const handleClick = (event) => {
+        if (calendarApi) {
+            // Remove previous selection
+            document.querySelectorAll('.selected-day').forEach(el => {
+                el.classList.remove('selected-day');
+            });
 
-  const getEvents = () => {
-      //getting events from the user after every NEW ADDITION to the calendar
-  }
-
-  return (
-    <div>
-      <nav>StudyStraight</nav>
-      <div>
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          //events={eventsList}
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay',
-          }}
-          dateClick={handleClick}
-        />
-        {openTask && (
-          <div>
-            <TaskInput 
-            selectedDate={selectedDate}
-            isDisplayed={openTask}/>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-//A function to add tasks is contained within the calendar page
-function TaskInput({selectedDate, isDisplayed}){
-  const [taskDetails, setTaskDetails] = useState({
-      title: '',
-      priority: 'MED',
-      description: '',
-      date: selectedDate || '',
-      completed: false,
-      userID: "test",
-      courseID: "test",
-    });
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setTaskDetails({ ...taskDetails, [name]: value });
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('Task details', taskDetails);
-      setOpenTask(false);
+            if (selectedDate !== event.dateStr) {
+                // New date selected
+                event.dayEl.classList.add('selected-day');
+                setSelectedDate(event.dateStr);
+                if (onDateSelect) {
+                    onDateSelect(event.date);
+                }
+            } else {
+                // Same date clicked - deselect
+                setSelectedDate('');
+                if (onDateSelect) {
+                    onDateSelect(null);
+                }
+            }
+        }
     };
 
-  if(isDisplayed){
-  return(
-  <form onSubmit = {handleSubmit}>
-      <div>
-          <label>
-              Title:
-              <input
-                  type="text"
-                  name="title"
-                  value={taskDetails.title}
-                  onChange={handleChange}
-                  required
-              />
-          </label>
-      </div>
-
-      <div>
-          <label>Description</label>
-          <input
-              type="text"
-              name="description"
-              value={taskDetails.description}
-              onChange={handleChange}
-              required
-          />
-      </div>
-
-      <div>
-      <label>Priority:</label>
-      <select
-        name="priority"
-        value={taskDetails.priority}
-        onChange={handleChange}
-      >
-        <option value="LOW">Low</option>
-        <option value="MED">Medium</option>
-        <option value="HIGH">High</option>
-      </select>
-    </div>
-    <button type="submit">Save Task</button>
-  </form>
-  );
-  }
+    return (
+        <div className="calendar-wrapper">
+            <FullCalendar
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView="dayGridMonth"
+                headerToolbar={{
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay',
+                }}
+                dateClick={handleClick}
+                height="100%"
+                ref={(el) => {
+                    if (el) {
+                        setCalendarApi(el.getApi());
+                    }
+                }}
+            />
+        </div>
+    );
 }
