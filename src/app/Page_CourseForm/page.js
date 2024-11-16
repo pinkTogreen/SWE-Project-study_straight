@@ -1,7 +1,8 @@
 'use client'
 import { useState } from "react"
-import Calendar from "./calendar/calendar"
+import Calendar from "../components/calendar/calendar"
 import handleCourse from "@/api/course.js"
+import Link from 'next/link';
 
 export default function CourseForm() {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -133,6 +134,15 @@ export default function CourseForm() {
                         <button type="submit" className="submit-button">
                             Add Course
                         </button>
+
+                        <Link href="/Page_AddTask">
+                        <button className="fade">Add Task</button>
+                        </Link>
+
+                        <Link href="/Page_Profile">
+                        <button className="fade">View Profile</button>
+                        </Link>
+                        
                     </form>
                 </div>
 

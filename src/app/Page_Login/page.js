@@ -1,9 +1,9 @@
-
 'use client'
 import { useState } from "react"
 import { login } from "@/actions/action"
-// import styles from "./loginForm.css"
+import styles from "./loginForm.css"
 import { useRouter } from 'next/navigation'
+import Link from 'next/link';
 
 //add a use state so that you can call a function when the submit button is clicked, 
 //ensure that the error message is only shown after inputting bad data, and it's removed when the user begins entering new data
@@ -48,14 +48,18 @@ export default function Page(){
                         onChange = {(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button className = "fade">Enter</button>
-
+                    <Link href="/Page_Profile">
+                        <button className="fade" type="submit">
+                            Enter
+                        </button>
+                    </Link>
+                    
                 </form>
 
                 <div 
                     className = "message">
                     <p>New user?</p>
-                    <i><u>Sign up today!</u></i>
+                    <Link href="/Page_Signup"> <u>Sign up today!</u> </Link>
                 </div>
             </div>
 

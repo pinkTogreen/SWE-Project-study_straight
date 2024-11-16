@@ -3,7 +3,8 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { addAccount } from "@/actions/action"
 import handleSignup from "../../api/signup"
-
+import styles from "../Page_Login/loginForm.css"
+import Link from 'next/link';
 
 export default function Signup(){
     const [username, setUsername] = useState('');
@@ -53,14 +54,18 @@ export default function Signup(){
                         onChange = {(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button className = "fade">Submit</button>
-
+                    <Link href="/Page_Profile">
+                        <button className="fade" type="submit">
+                            Enter
+                        </button>
+                    </Link>
+                    
                 </form>
 
                 <div 
                     className = "message">
                     <p>Already a user?</p>
-                    <i><u>Login!</u></i>
+                    <Link href="/Page_Login"> <u>Login!</u> </Link>
                 </div>
             </div>
 
