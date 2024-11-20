@@ -9,6 +9,7 @@ import Link from 'next/link';
 export default function Signup(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,6 +20,8 @@ export default function Signup(){
             return;
         }
         await addAccount(username, password);
+
+        router.push('/Page_Profile');
 
     }
     
@@ -54,12 +57,7 @@ export default function Signup(){
                         onChange = {(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <Link href="/Page_Profile">
-                        <button className="fade" type="submit">
-                            Enter
-                        </button>
-                    </Link>
-                    
+                    <button className = "fade">Enter</button>
                 </form>
 
                 <div 

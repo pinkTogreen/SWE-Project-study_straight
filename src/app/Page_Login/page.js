@@ -17,11 +17,14 @@ export default function Page(){
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = { username, password }; 
-        
-        //right now there's nothing to move to a new page, but that will be dealt with
-        let response = await login(username, password);
-        console.log(response);
 
+        if (!username || !password) {
+            alert("Please complete both fields.");
+            return;
+        }
+        if (await login(username, password)){
+            router.push('/Page_Profile');
+        }
     }
 
 
@@ -48,12 +51,7 @@ export default function Page(){
                         onChange = {(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <Link href="/Page_Profile">
-                        <button className="fade" type="submit">
-                            Enter
-                        </button>
-                    </Link>
-                    
+                    <button className = "fade">Enter</button>
                 </form>
 
                 <div 
