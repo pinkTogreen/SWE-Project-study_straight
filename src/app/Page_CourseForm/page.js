@@ -3,14 +3,17 @@ import { useState } from "react"
 import Calendar from "../components/calendar/calendar"
 import handleCourse from "@/api/course.js"
 import Link from 'next/link';
+import { useUser } from '../context/UserContext';
 
 export default function CourseForm() {
+    const { currentUser } = useUser();
     const [selectedDate, setSelectedDate] = useState(null);
     const [courseData, setCourseData] = useState({
         name: "",
         description: "",
         term: "",
-        year: new Date().getFullYear()
+        year: new Date().getFullYear(),
+        createdBy: currentUser
     });
     const [taskData, setTaskData] = useState({
         title: "",
@@ -33,7 +36,8 @@ export default function CourseForm() {
         const { name, value } = e.target;
         setCourseData(prev => ({
             ...prev,
-            [name]: value
+            [name]: value,
+            createdBy: currentUser
         }));
     };
 
@@ -46,7 +50,8 @@ export default function CourseForm() {
                 name: "",
                 description: "",
                 term: "",
-                year: new Date().getFullYear()
+                year: new Date().getFullYear(),
+                createdBy: currentUser
             });
         } catch (error) {
             console.error("Error adding course:", error);

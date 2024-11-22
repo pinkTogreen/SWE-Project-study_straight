@@ -20,6 +20,10 @@ const courseSchema = new mongoose.Schema({
 		type: Number, //must be a number
 		required: true,
 	},
+	createdBy: {
+		type: String, 
+		//required: true,
+	},
 
 })
 

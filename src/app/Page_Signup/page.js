@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { addAccount } from "@/actions/action"
+import { useUser } from '../context/UserContext'; // Import the useUser hook
 import handleSignup from "../../api/signup"
 import styles from "../Page_Login/loginForm.css"
 import Link from 'next/link';
@@ -9,6 +10,7 @@ import Link from 'next/link';
 export default function Signup(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { setCurrentUser } = useUser(); // Get setCurrentUser from context
     const router = useRouter();
 
     const handleSubmit = async (event) => {
@@ -19,12 +21,16 @@ export default function Signup(){
             alert("Please complete both fields.");
             return;
         }
-        await addAccount(username, password);
+        const signupSuccessful = await addAccount(username, password); 
 
-        router.push('/Page_Profile');
-
+        if (signupSuccessful) {
+            setCurrentUser(username);
+            router.push('/Page_Profile');
+        } else {
+            console.log('Login failed');
+        }
     }
-    
+
     return (
         <div className = "container">
             <div className = "login-box">

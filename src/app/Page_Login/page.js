@@ -4,6 +4,7 @@ import { login } from "@/actions/action"
 import styles from "./loginForm.css"
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
+import { useUser } from '../context/UserContext'; // Import the useUser hook
 
 //add a use state so that you can call a function when the submit button is clicked, 
 //ensure that the error message is only shown after inputting bad data, and it's removed when the user begins entering new data
@@ -12,6 +13,7 @@ export default function Page(){
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { setCurrentUser } = useUser(); // Get setCurrentUser from context
     const router = useRouter();
 
     const handleSubmit = async (event) => {
@@ -23,10 +25,10 @@ export default function Page(){
             return;
         }
         if (await login(username, password)){
+            setCurrentUser(username);
             router.push('/Page_Profile');
         }
     }
-
 
     return (
         <div className = "container">

@@ -1,76 +1,62 @@
-'use client'
-import { useState } from "react"
-import { useRouter } from 'next/navigation'
-import styles from "../Page_Login/loginForm.css"
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '../context/UserContext';
 import Link from 'next/link';
+import { getUserCourses } from "@/api/course";
+import styles from "../Page_Login/loginForm.css";
 
 export default function ProfilePage() {
-    const [username, setUsername] = useState('JohnDoe');
-    const [email, setEmail] = useState('johndoe@example.com');
-    const [isEditing, setIsEditing] = useState(false);
-    const router = useRouter();
+    const { currentUser } = useUser(); // Access the currentUser from context
+    const [courses, setCourses] = useState([]);
+    const [error, setError] = useState(null);
 
-    const handleSave = (event) => {
-        event.preventDefault();
-        // Here you would handle saving the profile changes to your server
-        console.log("Profile saved:", { username, email });
-        setIsEditing(false);  // Exit edit mode
+    useEffect(() => {
+        const loadCourses = async () => {
+            try {
+                const userCourses = await getUserCourses(currentUser);
+                setCourses(userCourses);
+            } catch (err) {
+                console.error("Failed to fetch courses:", err);
+                setError(err.message || "An error occurred");
+            }
+        };
+
+        if (currentUser) loadCourses();
+    }, [currentUser]);
+
+    if (error) {
+        return <div>Error: {error}</div>;
     }
 
     return (
-        <div className="container">
-            <div className="profile-box">
-                <h2>Profile</h2>
+        <div className={styles.profileContainer}>
+            {/* Welcome Banner */}
+            <h1 className={styles.welcomeBanner}>
+                Welcome to Study Straight, {currentUser}!
+            </h1>
 
-                <form onSubmit={handleSave}>
-                    <div>
-                        <label>Username</label>
-                        {isEditing ? (
-                            <input 
-                                type="text" 
-                                value={username} 
-                                onChange={(e) => setUsername(e.target.value)} 
-                            />
-                        ) : (
-                            <p>{username}</p>
-                        )}
-                    </div>
+            {/* Courses List */}
+            <h2 className={styles.coursesTitle}>My Courses</h2>
+            {courses.length > 0 ? (
+                <ul className={styles.courseList}>
+                    {courses.map((course) => (
+                        <li key={course._id} className={styles.courseItem}>
+                            <span className={styles.courseName}>{course.name}</span> - 
+                            <span className={styles.courseDescription}>{course.description}</span> - 
+                            <span className={styles.courseTerm}>{course.term}</span>   
+                            <span className={styles.courseYear}>{course.year}</span>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p className={styles.noCoursesMessage}>No courses found.</p>
+            )}
 
-                    <div>
-                        <label>Email</label>
-                        {isEditing ? (
-                            <input 
-                                type="email" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                            />
-                        ) : (
-                            <p>{email}</p>
-                        )}
-                    </div>
-
-                    <div>
-                        {isEditing ? (
-                            <button className="fade" type="submit">Save</button>
-                        ) : (
-                            
-                            <button 
-                                className="fade" 
-                                type="button" 
-                                onClick={() => setIsEditing(true)}
-                            >
-                                Edit Profile
-                            </button>
-                            
-                        )}
-                    </div>
-
-                    <Link href="/Page_CourseForm">
-                    <button className="fade">Go to Calendar</button>
-                    </Link>
-
-                </form>
-            </div>
+            {/* Navigation Button */}
+            <Link href="/Page_CourseForm">
+                <button className="fade">Go to Calendar</button>
+            </Link>
         </div>
-    )
+    );
 }

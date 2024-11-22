@@ -6,7 +6,7 @@ export default async function handleCourse (req, userData){
     await dbConnect(); //we can't rely on the same connection all the time, learning things as we go
     switch (req){
         case "GET": //retrieving information related to the course
-            return await fetch(userData); //retrieving information related to the course
+            return await fetch(userData); 
         case "POST": //adding a new course to the database
             return await add(userData);
         case "PUT": //updating or adding information to the course document
@@ -15,7 +15,7 @@ export default async function handleCourse (req, userData){
 
 }
 
-async function fetch (userData){
+async function fetch (userData){ 
     let response = await Course.find(userData); //takes an object ID of a user, and returns all of the courses under that user
     return response;
 }
@@ -41,5 +41,20 @@ async function update (id, userData){
     } catch (error) {
         console.error('Error updating course:', error);
         throw error;
+    }
+}
+
+export async function getUserCourses(createdBy) {
+    await dbConnect();
+    try {
+        const courses = await Course.find({ createdBy }).lean(); 
+        // need to convert document to plan object because we are not using built-in API routes...
+        return courses.map(course => ({
+            ...course,
+            _id: course._id.toString(),
+        }));
+    } catch (error) {
+        console.error("Error getting courses:", error);
+        throw new Error("Failed to get courses");
     }
 }
