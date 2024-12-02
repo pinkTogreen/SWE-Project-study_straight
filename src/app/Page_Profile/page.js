@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
 import Link from 'next/link';
 import { getUserCourses } from "@/api/course";
-import styles from "../Page_Login/loginForm.css";
+import "./profile.css";
 
 export default function ProfilePage() {
     const { currentUser, logout } = useUser();
@@ -72,28 +72,28 @@ export default function ProfilePage() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className={styles.profileContainer}>
-            <h1 className={styles.welcomeBanner}>
+        <div className="profileContainer">
+            <h1 className="welcomeBanner">
                 Welcome to Study Straight, {currentUser}!
             </h1>
 
-            <h2 className={styles.coursesTitle}>My Courses</h2>
+            <h2 className="coursesTitle">My Courses</h2>
             {courses.length > 0 ? (
-                <ul className={styles.courseList}>
+                <ul className="courseList">
                     {sortedCourses.map((course) => (
-                        <li key={course._id} className={styles.courseItem}>
-                            <span className={styles.courseName}>{course.name}</span> - 
-                            <span className={styles.courseDescription}>{course.description}</span> - 
-                            <span className={styles.courseTerm}>{course.term}</span>   
-                            <span className={styles.courseYear}>{course.year}</span>
+                        <li key={course._id} className="courseItem">
+                            <span className="courseName">{course.name}</span> - 
+                            <span className="courseDescription">{course.description}</span> - 
+                            <span className="courseTerm">{course.term}</span>   
+                            <span className="courseYear">{course.year}</span>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p className={styles.noCoursesMessage}>No courses found.</p>
+                <p className="noCoursesMessage">No courses found.</p>
             )}
 
-            <div className={styles.buttonContainer}>
+            <div className="buttonContainer">
                 <Link href="/Page_CourseForm">
                     <button className="fade">Go to Calendar</button>
                 </Link>

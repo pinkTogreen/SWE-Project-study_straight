@@ -1,12 +1,11 @@
-
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
 }
 
-.login-box{
+.login-box {
     background: rgba(255, 255, 255, 0.916);
     text-align: center;
     border: 2px solid #ffffff5a;
@@ -17,116 +16,12 @@
     box-shadow: 4px 5px 12px 0px rgba(151,184,200,0.51);
 }
 
-h1{
-    text-align: center;
-}
-
-h2{
-    margin-top: 30px;
-    color: #495962;
-}
-
-
-input{
-    border: 2px solid #93cfe31b;
-    border-radius: 5px;
-    background-color: #f1f7f9;
-    margin: 10px 0px 10px;
-    width: 200px;
-    height: 40px;
-    outline: none;
-}
-
-input::placeholder {
-    opacity: 0.15;
-    color:#093651;
-    font-weight: bold;
-    text-align: center;
-}
-
-/* input[type=text]:focus {
-    I want to add a fade here
-    border: 3px solid #555;
-    transition: background-color 0.3s;
-  } */
-
-.fade {
-    background-color:  #8bc9de; /* Background color on hover */
-    color:  #ffffff;
-    transition: background-color 0.3s;
-}
-
-.fade:hover {
-    background-color:  #6fb2ca;
-}
-
-.message{
+.message {
     text-align: center;
     color: #8eb5ca;
-    font-size: small; font-weight: bold;
+    font-size: small;
+    font-weight: bold;
     margin-top: 20px;
     line-height: 0.5;
-}
-  /* this would be a nice color to use for an X button or something -> #ca6f6f*/
-
-button{
-    border: none;
-    border-radius: 20px;
-    margin-top: 10px;
-    padding: 10px 20px;
-    color: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
-    cursor: pointer; /* Change cursor to pointer */
-    transition: background-color 0.3s, #ffffff 1s;
-}
-
-.profileContainer {
-    text-align: center;
-    padding: 2rem;
-}
-
-.welcomeBanner {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    color: #333;
-}
-
-.coursesTitle {
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.courseList {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 600px;
-}
-
-.courseItem {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.courseName {
-    font-weight: bold;
-    margin-right: 0.5rem;
-}
-
-.courseDescription,
-.courseTerm,
-.courseYear {
-    margin-left: 0.25rem;
-    color: #555;
-}
-
-.noCoursesMessage {
-    font-size: 1.2rem;
-    color: #777;
 }
 

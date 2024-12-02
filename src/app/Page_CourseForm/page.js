@@ -5,6 +5,7 @@ import handleCourse from "@/api/course.js"
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import { useRouter } from 'next/navigation';
+import "./courseForm.css"
 
 export default function CourseForm() {
     const { currentUser } = useUser();
@@ -183,12 +184,10 @@ export default function CourseForm() {
                             Add Course
                         </button>
 
-                        <Link href="/Page_AddTask">
-                        <button className="fade">Add Task</button>
-                        </Link>
-
-                        <Link href="/Page_Profile">
-                        <button className="fade">View Profile</button>
+                        <Link href="/Page_Profile" style={{ width: '100%' }}>
+                            <button className="fade submit-button" style={{ width: '100%' }}>
+                                View Profile
+                            </button>
                         </Link>
                         
                     </form>
