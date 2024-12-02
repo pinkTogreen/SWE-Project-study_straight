@@ -7,11 +7,18 @@ import { getUserCourses } from "@/api/course";
 import styles from "../Page_Login/loginForm.css";
 
 export default function ProfilePage() {
-    const { currentUser } = useUser(); // Access the currentUser from context
+    const { currentUser, logout } = useUser();
+    const router = useRouter();
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        // Redirect if not logged in
+        if (!currentUser) {
+            router.push('/Page_Login');
+            return;
+        }
+
         const loadCourses = async () => {
             try {
                 const userCourses = await getUserCourses(currentUser);
@@ -22,21 +29,23 @@ export default function ProfilePage() {
             }
         };
 
-        if (currentUser) loadCourses();
-    }, [currentUser]);
+        loadCourses();
+    }, [currentUser, router]);
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const handleLogout = () => {
+        logout();
+        router.push('/Page_Login');
+    };
+
+    if (!currentUser) return null;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className={styles.profileContainer}>
-            {/* Welcome Banner */}
             <h1 className={styles.welcomeBanner}>
                 Welcome to Study Straight, {currentUser}!
             </h1>
 
-            {/* Courses List */}
             <h2 className={styles.coursesTitle}>My Courses</h2>
             {courses.length > 0 ? (
                 <ul className={styles.courseList}>
@@ -53,10 +62,16 @@ export default function ProfilePage() {
                 <p className={styles.noCoursesMessage}>No courses found.</p>
             )}
 
-            {/* Navigation Button */}
-            <Link href="/Page_CourseForm">
-                <button className="fade">Go to Calendar</button>
-            </Link>
+            <div className={styles.buttonContainer}>
+                <Link href="/Page_CourseForm">
+                    <button className="fade">Go to Calendar</button>
+                </Link>
+                <button onClick={handleLogout} className="fade">
+                    Logout
+                </button>
+            </div>
         </div>
     );
 }
+
+

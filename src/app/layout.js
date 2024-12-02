@@ -1,24 +1,22 @@
+import { UserProvider } from './context/UserContext';
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { UserProvider } from './context/UserContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({ children }) {
-  return (
-    <UserProvider>
-    <html lang="en">
-        <body className={`${inter.className} min-h-screen`}>
-          {children} {}
-        </body>
-      </html>
-    </UserProvider>
-  );
-}
-
-export function generateMetadata() {
-  return {
+export const metadata = {
     title: 'Study Straight',
     description: 'Study planning and organization tool'
-  }
+};
+
+export default function RootLayout({ children }) {
+    return (
+        <html lang="en">
+            <body className={`${inter.className} min-h-screen`}>
+                <UserProvider>
+                    {children}
+                </UserProvider>
+            </body>
+        </html>
+    );
 }

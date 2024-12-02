@@ -13,20 +13,41 @@ export default function Page(){
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const { setCurrentUser } = useUser(); // Get setCurrentUser from context
     const router = useRouter();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = { username, password }; 
+        setError('');
 
         if (!username || !password) {
             alert("Please complete both fields.");
             return;
         }
-        if (await login(username, password)){
+
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError('Invalid username or password');
+                return;
+            }
+
             setCurrentUser(username);
             router.push('/Page_Profile');
+            
+        } catch (error) {
+            setError('An error occurred during login');
+            console.error('Login error:', error);
         }
     }
 
@@ -35,6 +56,12 @@ export default function Page(){
             <div className = "login-box">
 
                 <h2>Login</h2>
+
+                {error && (
+                    <div style={{ color: 'red', marginBottom: '10px', textAlign: 'center' }}>
+                        {error}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit}>
                     <div>

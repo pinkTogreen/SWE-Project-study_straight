@@ -7,22 +7,18 @@ const courseSchema = new mongoose.Schema({
 		required: true,
 	},
     description: {
-		type: String, //a description of the course, if needed
+		type: String,
+		required: true,
 	},
 
     //semester information
     term: {
 		type: String,
-        enum: ['Fall', 'Spring', 'Summer'],
 		required: true,
 	},
-    year: {
-		type: Number, //must be a number
+    username: {
+		type: String,
 		required: true,
-	},
-	createdBy: {
-		type: String, 
-		//required: true,
 	},
 
 })
