@@ -1,5 +1,6 @@
 'use client'
 
+import { getSchedule } from '@/actions/action';
 import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -9,6 +10,7 @@ import './calendar.css';
 export default function Calendar({ onDateSelect }) {
     const [selectedDate, setSelectedDate] = useState('');
     const [calendarApi, setCalendarApi] = useState(null);
+    //const events = {};
 
     const handleClick = (event) => {
         if (calendarApi) {
@@ -34,6 +36,13 @@ export default function Calendar({ onDateSelect }) {
         }
     };
 
+    const refreshEvents = () => {
+        //get all tasks
+        //get all sessions
+        //add it to the events array so it can be displayed on the calendar
+
+    }
+
     return (
         <div className="calendar-wrapper">
             <FullCalendar
@@ -44,6 +53,7 @@ export default function Calendar({ onDateSelect }) {
                     center: 'title',
                     right: 'dayGridMonth,dayGridWeek,dayGridDay',
                 }}
+                events = {events}
                 dateClick={handleClick}
                 height="100%"
                 ref={(el) => {

@@ -6,7 +6,7 @@ import Session from '@/models/Session';
 //adding new session data
 
 export default async function handleSession (req, userData){
-    await dbConnect(); //we can't rely on the same connection all the time, learning things as we go
+    await dbConnect();
 
     if (req.method === 'GET') { //takes in a user ID, and returns all of the sessions related to the user
         return await fetch(userData);
@@ -23,8 +23,8 @@ export default async function handleSession (req, userData){
 
 }
 
-async function fetch(userID){
-    return await Session.find(userData);
+async function fetchSessions(username){//takes a username, returns associated sessions
+    return await Session.findMany(userData);
 }
 
 async function add(sessionDetails){

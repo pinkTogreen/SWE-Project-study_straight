@@ -10,6 +10,7 @@ import Link from 'next/link';
 export default function Signup(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [retypePass, setretypePass] = useState('');
     const { setCurrentUser } = useUser(); // Get setCurrentUser from context
     const router = useRouter();
 
@@ -19,6 +20,10 @@ export default function Signup(){
 
         if (!username || !password) {
             alert("Please complete both fields.");
+            return;
+        }
+        if(retypePass != password){
+            alert("Passwords do no match.");
             return;
         }
         const signupSuccessful = await addAccount(username, password); 
@@ -44,24 +49,31 @@ export default function Signup(){
                 */}
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <input 
-                        type="text" 
-                        placeholder="Username"
-                        value = {username}
-                        onChange = {(e) => setUsername(e.target.value)}
-                        />
-                        <input 
-                        type="password" 
-                        placeholder="Password"
-                        value = {password}
-                        onChange = {(e) => setPassword(e.target.value)}
-                        />
-                        <input 
-                        type="password" 
-                        placeholder="Re-enter your password"
-                        value = {password}
-                        onChange = {(e) => setPassword(e.target.value)}
-                        />
+                        <div>
+                            <input 
+                            type="text" 
+                            placeholder="Username"
+                            value = {username}
+                            onChange = {(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+                        
+                        <div>
+                            <input 
+                            type="password" 
+                            placeholder="Password"
+                            value = {password}
+                            onChange = {(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <input 
+                            type="password" 
+                            placeholder="Re-enter your password"
+                            value = {retypePass}
+                            onChange = {(e) => setretypePass(e.target.value)}
+                            />
+                        </div>
                     </div>
                     <button className = "fade">Enter</button>
                 </form>

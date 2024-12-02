@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react"
 import Calendar from "../components/calendar/calendar"
 import handleCourse from "@/api/course.js"
+import { addTask } from "@/actions/action"
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import { useRouter } from 'next/navigation';
@@ -22,7 +23,14 @@ export default function CourseForm() {
     const [taskData, setTaskData] = useState({
         title: "",
         description: "",
-        priority: "MED"
+        priority: "MED",
+        date: ""
+    });
+    const [sessionData, setSessionData] = useState({
+        title: "",
+        description: "",
+        duration: 0,
+        date: "",
     });
 
     useEffect(() => {
@@ -31,6 +39,9 @@ export default function CourseForm() {
         }
     }, [currentUser, router]);
 
+    //setting the form type
+    const[activeForm, setActiveForm] = useState("task"); 
+  
     const handleDateSelect = (date) => {
         setSelectedDate(date);
         if (!date) {
@@ -42,6 +53,8 @@ export default function CourseForm() {
         }
     };
 
+    /////COURSE SECTION//////
+    //Course Input
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         console.log(`Handling input change for ${name}:`, value);
@@ -52,6 +65,7 @@ export default function CourseForm() {
         }));
     };
 
+    //Submitting course input
     const handleSubmit = async (e) => {
         e.preventDefault();
         setCourseError('');
@@ -97,6 +111,8 @@ export default function CourseForm() {
         }
     };
 
+    ///// TASKS SECTION /////
+    //task input
     const handleTaskChange = (e) => {
         const { name, value } = e.target;
         setTaskData(prev => ({
@@ -105,9 +121,36 @@ export default function CourseForm() {
         }));
     };
 
+    //submitting task input
     const handleTaskSubmit = async (e) => {
         e.preventDefault();
-        console.log('Task submitted:', { ...taskData, date: selectedDate });
+        // //console.log('Task submitted:', { ...taskData, date: selectedDate });
+        taskData.date = selectedDate;
+        console.log(taskData);
+        await addTask(taskData);
+        // setTaskData({
+        //     title: "",
+        //     description: "",
+        //     priority: "MED",
+        //     date: "",
+        // });
+    };
+    
+
+    ///// SESSION SECTION /////
+    //session input
+    const handleSessionChange = (e) => {
+        const { name, value } = e.target;
+        setTaskData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    //submitting session input
+    const handleSessionSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Session submitted:', { ...taskData, date: selectedDate });
         setTaskData({
             title: "",
             description: "",
@@ -115,15 +158,137 @@ export default function CourseForm() {
         });
     };
 
+
+    /////CANCELLING INPUT/////
+    const handleCancel = () =>{
+        //reset status
+        setActiveForm("task");
+        setSelectedDate(null);
+    }
+
     return (
         <div className="layout-container">
             <div className="calendar-container">
                 <Calendar onDateSelect={handleDateSelect} />
             </div>
-            
-            <div className="form-container">
+
+            {selectedDate && (<div className="form-container">
                 <div className="form-wrapper">
-                    <h2 className="form-title">Add Course</h2>
+                    <div className="choice-wrapper">
+                        <button
+                            className={activeForm === "task" ? "active-button" : ""}
+                            onClick={() => setActiveForm("task")}
+                        >
+                            Task
+                        </button>
+                        <button
+                            className={activeForm === "session" ? "active-button" : ""}
+                            onClick={() => setActiveForm("session")}
+                        >
+                            Session
+                        </button>
+                    </div>
+                    
+                    
+                    {activeForm === "task" && (
+                        <div className="task-form">
+                            <h2>Add Task for {selectedDate?.toLocaleDateString()}</h2>
+                            <form onSubmit={handleTaskSubmit} className="course-form">
+                                <div className="form-field">
+                                    <label>Task Title:</label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        value={taskData.title}
+                                        onChange={handleTaskChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-field">
+                                    <label>Description:</label>
+                                    <textarea
+                                        name="description"
+                                        value={taskData.description}
+                                        onChange={handleTaskChange}
+                                        rows="2"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-field">
+                                    <label>Priority:</label>
+                                    <select
+                                        name="priority"
+                                        value={taskData.priority}
+                                        onChange={handleTaskChange}
+                                        required
+                                    >
+                                        <option value="LOW">Low</option>
+                                        <option value="MED">Medium</option>
+                                        <option value="HIGH">High</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" className="submit-button">
+                                    Add Task
+                                </button>
+                            </form>
+                        </div>
+                    )}
+
+                    {activeForm === "session" && (
+                        <div className="session-form">
+                            <h2>Add Session for {selectedDate?.toLocaleDateString()}</h2>
+                            <form onSubmit={handleSessionSubmit} className="course-form">
+                                <div className="form-field">
+                                    <label>Session Title:</label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        value={sessionData.title}
+                                        onChange={handleSessionChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-field">
+                                    <label>Duration (minutes):</label>
+                                    <input
+                                        type="number"
+                                        name="duration"
+                                        value={sessionData.duration}
+                                        onChange={handleSessionChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-field">
+                                    <label>Notes:</label>
+                                    <textarea
+                                        name="notes"
+                                        value={sessionData.notes}
+                                        onChange={handleSessionChange}
+                                        rows="2"
+                                    />
+                                </div>
+
+                                <button type="submit" className="submit-button">
+                                    Add Session
+                                </button>
+                            </form>
+                        </div>
+                    )}
+                    <button onClick = {handleCancel}>Cancel</button>
+                </div>
+            </div>)}
+            
+        </div>
+    );
+}
+
+
+/* <h2 className="form-title">Add Course</h2>
                     <form onSubmit={handleSubmit} className="course-form">
                         <div className="form-field">
                             <label>Course Name:</label>
@@ -184,62 +349,15 @@ export default function CourseForm() {
                             Add Course
                         </button>
 
+
                         <Link href="/Page_Profile" style={{ width: '100%' }}>
                             <button className="fade submit-button" style={{ width: '100%' }}>
                                 View Profile
                             </button>
+
+                        <Link href="/Page_Profile">
+                        <button className="fade">View Profile</button>
+
                         </Link>
                         
-                    </form>
-                </div>
-
-                {selectedDate && (
-                    <div className="form-wrapper task-form">
-                        <h2 className="form-title">Add Task for {selectedDate?.toLocaleDateString()}</h2>
-                        <form onSubmit={handleTaskSubmit} className="course-form">
-                            <div className="form-field">
-                                <label>Task Title:</label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    value={taskData.title}
-                                    onChange={handleTaskChange}
-                                    required
-                                />
-                            </div>
-                            
-                            <div className="form-field">
-                                <label>Description:</label>
-                                <textarea
-                                    name="description"
-                                    value={taskData.description}
-                                    onChange={handleTaskChange}
-                                    rows="2"
-                                    required
-                                />
-                            </div>
-                            
-                            <div className="form-field">
-                                <label>Priority:</label>
-                                <select
-                                    name="priority"
-                                    value={taskData.priority}
-                                    onChange={handleTaskChange}
-                                    required
-                                >
-                                    <option value="LOW">Low</option>
-                                    <option value="MED">Medium</option>
-                                    <option value="HIGH">High</option>
-                                </select>
-                            </div>
-                            
-                            <button type="submit" className="submit-button">
-                                Add Task
-                            </button>
-                        </form>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-} 
+                    </form> */

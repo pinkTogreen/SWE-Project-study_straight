@@ -27,10 +27,14 @@ const sessSchema = new mongoose.Schema({
           ref: 'Task', // Referencing the Task schema
         },
     ],
-    userId: { // Who is the session associated with?
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Referencing the Task schema
+    user: {
+        type: String,
+        requred: true
     },
+    // userId: { // Who is the session associated with?
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User', // Referencing the Task schema
+    // },
     notes:{ //additonal notes of the session that the user might want to add
         type: [String],
     },
