@@ -9,7 +9,8 @@ export default function RootLayout({ children }) {
     <UserProvider>
     <html lang="en">
         <body className={`${inter.className} min-h-screen`}>
-          {children} {}
+          <nav className="navbar">hello</nav>
+          <main className="content">{children}</main>
         </body>
       </html>
     </UserProvider>
@@ -22,3 +23,10 @@ export function generateMetadata() {
     description: 'Study planning and organization tool'
   }
 }
+
+
+
+/*
+
+
+*/

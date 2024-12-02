@@ -1,7 +1,8 @@
 'use client'
 import { useState } from "react"
 import { login } from "@/actions/action"
-import styles from "./loginForm.css"
+// import styles from "./loginForm.css"
+// import styles from "../components/calendar/calendar.css"
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import { useUser } from '../context/UserContext'; // Import the useUser hook
@@ -27,15 +28,13 @@ export default function Page(){
         if (await login(username, password)){
             setCurrentUser(username);
             router.push('/Page_Profile');
-        }
+        } else {alert("Incorrect username or password")}
     }
 
     return (
         <div className = "container">
             <div className = "login-box">
-
                 <h2>Login</h2>
-
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input 
@@ -62,7 +61,6 @@ export default function Page(){
                     <Link href="/Page_Signup"> <u>Sign up today!</u> </Link>
                 </div>
             </div>
-
         </div>
     )
 }

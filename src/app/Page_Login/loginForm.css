@@ -1,9 +1,9 @@
-
+/* 
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
 }
 
 .login-box{
@@ -44,14 +44,8 @@ input::placeholder {
     text-align: center;
 }
 
-/* input[type=text]:focus {
-    I want to add a fade here
-    border: 3px solid #555;
-    transition: background-color 0.3s;
-  } */
-
 .fade {
-    background-color:  #8bc9de; /* Background color on hover */
+    background-color:  #8bc9de;
     color:  #ffffff;
     transition: background-color 0.3s;
 }
@@ -67,7 +61,6 @@ input::placeholder {
     margin-top: 20px;
     line-height: 0.5;
 }
-  /* this would be a nice color to use for an X button or something -> #ca6f6f*/
 
 button{
     border: none;
@@ -76,7 +69,7 @@ button{
     padding: 10px 20px;
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
-    cursor: pointer; /* Change cursor to pointer */
+    cursor: pointer;
     transition: background-color 0.3s, #ffffff 1s;
 }
 
@@ -129,4 +122,4 @@ button{
     font-size: 1.2rem;
     color: #777;
 }
-
+ */
