@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
 import Link from 'next/link';
@@ -19,21 +19,39 @@ export default function ProfilePage() {
             return;
         }
 
+        let isMounted = true;
+
         const loadCourses = async () => {
             try {
-                setIsLoading(true);
                 const userCourses = await getUserCourses(currentUser);
-                setCourses(userCourses);
+                if (isMounted) {
+                    setCourses(userCourses);
+                    setIsLoading(false);
+                }
             } catch (err) {
-                console.error("Failed to fetch courses:", err);
-                setError(err.message || "An error occurred");
-            } finally {
-                setIsLoading(false);
+                if (isMounted) {
+                    console.error("Failed to fetch courses:", err);
+                    setError(err.message || "An error occurred");
+                    setIsLoading(false);
+                }
             }
         };
 
         loadCourses();
-    }, [currentUser, router]);
+
+        return () => {
+            isMounted = false;
+        };
+    }, [currentUser]);
+
+    const sortedCourses = useMemo(() => {
+        return [...courses].sort((a, b) => {
+            if (a.term === b.term) {
+                return a.name.localeCompare(b.name);
+            }
+            return a.term.localeCompare(b.term);
+        });
+    }, [courses]);
 
     const handleLogout = () => {
         logout();
@@ -53,7 +71,7 @@ export default function ProfilePage() {
             <h2 className={styles.coursesTitle}>My Courses</h2>
             {courses.length > 0 ? (
                 <ul className={styles.courseList}>
-                    {courses.map((course) => (
+                    {sortedCourses.map((course) => (
                         <li key={course._id} className={styles.courseItem}>
                             <span className={styles.courseName}>{course.name}</span> - 
                             <span className={styles.courseDescription}>{course.description}</span> - 
