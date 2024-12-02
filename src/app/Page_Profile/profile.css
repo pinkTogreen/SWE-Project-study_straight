@@ -1,0 +1,49 @@
+.profileContainer {
+    text-align: center;
+    padding: 2rem;
+}
+
+.welcomeBanner {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.coursesTitle {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.courseList {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.courseItem {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.courseName {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.courseDescription,
+.courseTerm,
+.courseYear {
+    margin-left: 0.25rem;
+    color: #555;
+}
+
+.noCoursesMessage {
+    font-size: 1.2rem;
+    color: #777;
+} 

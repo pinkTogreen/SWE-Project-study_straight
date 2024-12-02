@@ -1,26 +1,13 @@
-import Link from 'next/link';
-import styles from "./Page_Login/loginForm.css"
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-    const buttonStyle = {
-        margin: '10px',
-        padding: '10px 20px',
-        backgroundColor: '#0070f3',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        textDecoration: 'none',
-    };
+    const router = useRouter();
 
-    return (
-        <main className="container-main">
-            <h1>Welcome to Study Straight!</h1>
-            <div>
-                <Link href="/Page_Login" style={buttonStyle}>
-                    Login
-                </Link>
-            </div>
-        </main>
-    );
+    useEffect(() => {
+        router.push('/Page_Login');
+    }, []);
+
+    return null; // Return null since we're redirecting immediately
 }

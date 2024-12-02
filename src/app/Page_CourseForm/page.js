@@ -1,20 +1,24 @@
 'use client'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Calendar from "../components/calendar/calendar"
 import handleCourse from "@/api/course.js"
 import { addTask } from "@/actions/action"
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
+import { useRouter } from 'next/navigation';
+import "./courseForm.css"
 
 export default function CourseForm() {
     const { currentUser } = useUser();
+    const router = useRouter();
     const [selectedDate, setSelectedDate] = useState(null);
+    const [courseError, setCourseError] = useState('');
     const [courseData, setCourseData] = useState({
         name: "",
         description: "",
         term: "",
         year: new Date().getFullYear(),
-        createdBy: currentUser
+        username: currentUser
     });
     const [taskData, setTaskData] = useState({
         title: "",
@@ -29,9 +33,15 @@ export default function CourseForm() {
         date: "",
     });
 
+    useEffect(() => {
+        if (!currentUser) {
+            router.push('/Page_Login');
+        }
+    }, [currentUser, router]);
+
     //setting the form type
     const[activeForm, setActiveForm] = useState("task"); 
-
+  
     const handleDateSelect = (date) => {
         setSelectedDate(date);
         if (!date) {
@@ -47,28 +57,57 @@ export default function CourseForm() {
     //Course Input
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        console.log(`Handling input change for ${name}:`, value);
         setCourseData(prev => ({
             ...prev,
-            [name]: value,
-            createdBy: currentUser
+            [name]: name === 'year' ? parseInt(value, 10) : value,
+            username: currentUser
         }));
     };
 
     //Submitting course input
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setCourseError('');
         try {
-            let response = await handleCourse("POST", courseData);
-            console.log(response);
+            const courseWithUsername = {
+                ...courseData,
+                username: currentUser,
+                year: parseInt(courseData.year, 10)
+            };
+            
+            console.log('Submitting course data:', courseWithUsername);
+            
+            const response = await fetch('/api/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(courseWithUsername),
+            });
+
+            const data = await response.json();
+            console.log('Server response:', data);
+
+            if (!response.ok) {
+                if (response.status === 400) {
+                    setCourseError(data.error);
+                    return;
+                }
+                throw new Error(data.error || 'Failed to add course');
+            }
+
             setCourseData({
                 name: "",
                 description: "",
                 term: "",
                 year: new Date().getFullYear(),
-                createdBy: currentUser
+                username: currentUser
             });
+            
         } catch (error) {
             console.error("Error adding course:", error);
+            setCourseError('Failed to add course');
         }
     };
 
@@ -260,6 +299,11 @@ export default function CourseForm() {
                                 onChange={handleInputChange}
                                 required
                             />
+                            {courseError && (
+                                <div style={{ color: 'red', fontSize: '0.8rem', marginTop: '4px' }}>
+                                    {courseError}
+                                </div>
+                            )}
                         </div>
                         
                         <div className="form-field">
@@ -305,8 +349,15 @@ export default function CourseForm() {
                             Add Course
                         </button>
 
+
+                        <Link href="/Page_Profile" style={{ width: '100%' }}>
+                            <button className="fade submit-button" style={{ width: '100%' }}>
+                                View Profile
+                            </button>
+
                         <Link href="/Page_Profile">
                         <button className="fade">View Profile</button>
+
                         </Link>
                         
                     </form> */
