@@ -7,35 +7,24 @@ const courseSchema = new mongoose.Schema({
 		required: true,
 	},
     description: {
-		type: String,
-		required: true,
+		type: String, //a description of the course, if needed
 	},
 
     //semester information
     term: {
 		type: String,
+        enum: ['Fall', 'Spring', 'Summer'],
 		required: true,
 	},
     year: {
-        type: Number,
-        required: true,
-    },
-    username: {
-		type: String,
+		type: Number, //must be a number
 		required: true,
 	},
+	createdBy: {
+		type: String, 
+		//required: true,
+	},
 
-}, { 
-    versionKey: false // This will prevent the __v field from being added
-});
+})
 
-// Add this to see what's happening during save
-courseSchema.pre('save', function(next) {
-    console.log('Saving course with data:', this.toObject());
-    next();
-});
-
-// Clear the model if it exists to prevent schema changes from being ignored
-mongoose.models = {};
-
-export default mongoose.model('Course', courseSchema);
+export default mongoose.models.Course || mongoose.model('Course', courseSchema)

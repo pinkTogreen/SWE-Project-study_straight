@@ -16,43 +16,20 @@ export default async function handleCourse (req, userData){
 }
 
 async function fetch (userData){ 
-    console.log('Fetching courses with:', userData);
-    let response = await Course.find(userData);
-    // Log the full document structure
-    console.log('Course document structure:', JSON.stringify(response[0], null, 2));
+    let response = await Course.find(userData); //takes an object ID of a user, and returns all of the courses under that user
     return response;
 }
 
-async function add (userData){ 
+async function add (userData){ //takes in a prebuilt course object to create new data from
     try {
-        console.log('Adding course with data:', userData); // Debug log
-        
-        const existingCourse = await Course.findOne({
-            name: userData.name,
-            username: userData.username,
-            term: userData.term,
-            year: userData.year
-        });
-        
+        const existingCourse = await Course.findOne({name: userData.name}); //find the course if exists, ifi t does, throw error
         if(existingCourse){
             throw new Error('This course has already been added.');
         }
-
-        // Explicitly create course with all fields
-        const newCourse = new Course({
-            name: userData.name,
-            description: userData.description,
-            term: userData.term,
-            year: Number(userData.year), // Ensure year is a number
-            username: userData.username
-        });
-
-        console.log('About to save course:', newCourse); // Debug log
-        await newCourse.save();
-        console.log('Saved course:', newCourse); // Debug log
-        return newCourse;
+        const newCourse = new Course(userData);
+        newCourse.save();
     } catch (error) {
-        console.error('Error in add function:', error);
+        console.error('Preexisting course', error);
         throw error;
     }
 }
@@ -67,22 +44,14 @@ async function update (id, userData){
     }
 }
 
-export async function getUserCourses(user) {
+export async function getUserCourses(createdBy) {
     await dbConnect();
     try {
-        // Look for courses with either createdBy or username matching
-        const courses = await Course.find({ 
-            $or: [
-                { createdBy: user },
-                { username: user }
-            ]
-        }).lean(); 
-
-        // Make sure we're including all fields in the returned data
+        const courses = await Course.find({ createdBy }).lean(); 
+        // need to convert document to plan object because we are not using built-in API routes...
         return courses.map(course => ({
             ...course,
             _id: course._id.toString(),
-            year: course.year // Explicitly include year
         }));
     } catch (error) {
         console.error("Error getting courses:", error);

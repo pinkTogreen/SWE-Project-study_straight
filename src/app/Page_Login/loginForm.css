@@ -1,6 +1,4 @@
-
 /* 
-
 .container {
     display: flex;
     justify-content: center;
@@ -8,7 +6,7 @@
     height: 100vh;
 }
 
-.login-box {
+.login-box{
     background: rgba(255, 255, 255, 0.916);
     text-align: center;
     border: 2px solid #ffffff5a;
@@ -19,9 +17,6 @@
     box-shadow: 4px 5px 12px 0px rgba(151,184,200,0.51);
 }
 
-
-.message {
-=======
 h1{
     text-align: center;
 }
@@ -62,13 +57,10 @@ input::placeholder {
 .message{
     text-align: center;
     color: #8eb5ca;
-    font-size: small;
-    font-weight: bold;
+    font-size: small; font-weight: bold;
     margin-top: 20px;
     line-height: 0.5;
 }
-
-
 
 button{
     border: none;
@@ -131,4 +123,3 @@ button{
     color: #777;
 }
  */
-
