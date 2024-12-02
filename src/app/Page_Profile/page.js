@@ -12,6 +12,11 @@ export default function ProfilePage() {
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         if (!currentUser) {
@@ -57,6 +62,10 @@ export default function ProfilePage() {
         logout();
         router.push('/Page_Login');
     };
+
+    if (!mounted) {
+        return null;
+    }
 
     if (!currentUser) return null;
     if (isLoading) return <div>Loading...</div>;

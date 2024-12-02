@@ -6,9 +6,10 @@ const UserContext = createContext();
 export function UserProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        // Use sessionStorage instead of localStorage
+        setMounted(true);
         const storedUser = sessionStorage.getItem('currentUser');
         if (storedUser) {
             setCurrentUser(storedUser);
@@ -20,6 +21,11 @@ export function UserProvider({ children }) {
         setCurrentUser(null);
         sessionStorage.removeItem('currentUser');
     };
+
+    // Don't render anything until after mounting
+    if (!mounted) {
+        return null;
+    }
 
     // Show nothing while checking for stored user
     if (isLoading) {
