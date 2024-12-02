@@ -42,6 +42,8 @@ export default function Page(){
                 return;
             }
 
+            // Use sessionStorage instead of localStorage
+            sessionStorage.setItem('currentUser', username);
             setCurrentUser(username);
             router.push('/Page_Profile');
             

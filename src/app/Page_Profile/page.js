@@ -11,9 +11,9 @@ export default function ProfilePage() {
     const router = useRouter();
     const [courses, setCourses] = useState([]);
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Redirect if not logged in
         if (!currentUser) {
             router.push('/Page_Login');
             return;
@@ -21,11 +21,14 @@ export default function ProfilePage() {
 
         const loadCourses = async () => {
             try {
+                setIsLoading(true);
                 const userCourses = await getUserCourses(currentUser);
                 setCourses(userCourses);
             } catch (err) {
                 console.error("Failed to fetch courses:", err);
                 setError(err.message || "An error occurred");
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -38,6 +41,7 @@ export default function ProfilePage() {
     };
 
     if (!currentUser) return null;
+    if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
