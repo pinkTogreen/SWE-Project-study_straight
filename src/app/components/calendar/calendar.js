@@ -53,7 +53,7 @@ export default function Calendar({ onDateSelect }) {
                     center: 'title',
                     right: 'dayGridMonth,dayGridWeek,dayGridDay',
                 }}
-                events = {events}
+                // events = {events}
                 dateClick={handleClick}
                 height="100%"
                 ref={(el) => {

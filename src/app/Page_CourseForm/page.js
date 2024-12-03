@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import Calendar from "../components/calendar/calendar"
 import handleCourse from "@/api/course.js"
 import { addTask } from "@/actions/action"
+import { addSession } from "@/actions/action"
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,7 @@ export default function CourseForm() {
         year: new Date().getFullYear(),
         username: currentUser
     });
+
     const [taskData, setTaskData] = useState({
         title: "",
         description: "",
@@ -42,74 +44,107 @@ export default function CourseForm() {
     //setting the form type
     const[activeForm, setActiveForm] = useState("task"); 
   
+
     const handleDateSelect = (date) => {
         setSelectedDate(date);
-        if (!date) {
+        if (date === null) {
             setTaskData({
                 title: "",
                 description: "",
                 priority: "MED"
             });
         }
+    
     };
+
+    //cancelling form submission
+    const handleCancel = () =>{
+        setActiveForm("task");
+        setSelectedDate(null);
+    }
+
+    //toggle between forms
+    const toggleForm = (type) =>{
+        setActiveForm(type);
+        erasePrev(type);
+    }
+
+    //erasing form data after switching
+    const erasePrev = (switchedTo) => {
+        if(switchedTo === "session")
+            setTaskData({
+                title: "",
+                description: "",
+                priority: "MED"
+            });
+        
+        else if (switchedTo === "task")
+            setSessionData({
+                title: "",
+                description: "",
+                duration: 0,
+                date: "",
+            })
+
+    }
 
     /////COURSE SECTION//////
     //Course Input
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        console.log(`Handling input change for ${name}:`, value);
-        setCourseData(prev => ({
-            ...prev,
-            [name]: name === 'year' ? parseInt(value, 10) : value,
-            username: currentUser
-        }));
-    };
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     console.log(`Handling input change for ${name}:`, value);
+    //     setCourseData(prev => ({
+    //         ...prev,
+    //         [name]: name === 'year' ? parseInt(value, 10) : value,
+    //         username: currentUser
+    //     }));
+    // };
 
     //Submitting course input
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setCourseError('');
-        try {
-            const courseWithUsername = {
-                ...courseData,
-                username: currentUser,
-                year: parseInt(courseData.year, 10)
-            };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setCourseError('');
+    //     try {
+    //         const courseWithUsername = {
+    //             ...courseData,
+    //             username: currentUser,
+    //             year: parseInt(courseData.year, 10)
+    //         };
             
-            console.log('Submitting course data:', courseWithUsername);
+    //         console.log('Submitting course data:', courseWithUsername);
             
-            const response = await fetch('/api/courses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(courseWithUsername),
-            });
+    //         const response = await fetch('/api/courses', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(courseWithUsername),
+    //         });
 
-            const data = await response.json();
-            console.log('Server response:', data);
+    //         const data = await response.json();
+    //         console.log('Server response:', data);
 
-            if (!response.ok) {
-                if (response.status === 400) {
-                    setCourseError(data.error);
-                    return;
-                }
-                throw new Error(data.error || 'Failed to add course');
-            }
+    //         if (!response.ok) {
+    //             if (response.status === 400) {
+    //                 setCourseError(data.error);
+    //                 return;
+    //             }
+    //             throw new Error(data.error || 'Failed to add course');
+    //         }
 
-            setCourseData({
-                name: "",
-                description: "",
-                term: "",
-                year: new Date().getFullYear(),
-                username: currentUser
-            });
+    //         setCourseData({
+    //             name: "",
+    //             description: "",
+    //             term: "",
+    //             year: new Date().getFullYear(),
+    //             username: currentUser
+    //         });
             
-        } catch (error) {
-            console.error("Error adding course:", error);
-            setCourseError('Failed to add course');
-        }
-    };
+    //     } catch (error) {
+    //         console.error("Error adding course:", error);
+    //         setCourseError('Failed to add course');
+    //     }
+    // };
 
     ///// TASKS SECTION /////
     //task input
@@ -125,46 +160,31 @@ export default function CourseForm() {
     const handleTaskSubmit = async (e) => {
         e.preventDefault();
         // //console.log('Task submitted:', { ...taskData, date: selectedDate });
-        taskData.date = selectedDate;
-        console.log(taskData);
+        taskData.date = new Date(selectedDate);
         await addTask(taskData);
-        // setTaskData({
-        //     title: "",
-        //     description: "",
-        //     priority: "MED",
-        //     date: "",
-        // });
+        handleCancel();
     };
     
 
     ///// SESSION SECTION /////
-    //session input
+    //INPUT
     const handleSessionChange = (e) => {
         const { name, value } = e.target;
-        setTaskData(prev => ({
+        setSessionData(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
-    //submitting session input
+    //SUBMIT
     const handleSessionSubmit = async (e) => {
         e.preventDefault();
-        console.log('Session submitted:', { ...taskData, date: selectedDate });
-        setTaskData({
-            title: "",
-            description: "",
-            priority: "MED"
-        });
+        sessionData.date = new Date(selectedDate);
+        await addSession(sessionData);
+        handleCancel();
     };
 
 
-    /////CANCELLING INPUT/////
-    const handleCancel = () =>{
-        //reset status
-        setActiveForm("task");
-        setSelectedDate(null);
-    }
 
     return (
         <div className="layout-container">
@@ -177,13 +197,13 @@ export default function CourseForm() {
                     <div className="choice-wrapper">
                         <button
                             className={activeForm === "task" ? "active-button" : ""}
-                            onClick={() => setActiveForm("task")}
+                            onClick={() => toggleForm("task")}
                         >
                             Task
                         </button>
                         <button
                             className={activeForm === "session" ? "active-button" : ""}
-                            onClick={() => setActiveForm("session")}
+                            onClick={() => toggleForm("session")}
                         >
                             Session
                         </button>

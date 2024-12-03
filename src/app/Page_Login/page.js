@@ -54,7 +54,7 @@ export default function Page(){
             console.error('Login error:', error);
         }
 
-        } else {alert("Incorrect username or password")}
+        // } else {alert("Incorrect username or password")}
 
     }
 

@@ -22,24 +22,24 @@ export default function RootLayout({ children }) {
     );
 }
 
-export default function RootLayout({ children }) {
-  return (
-    <UserProvider>
-    <html lang="en">
-        <body className={`${inter.className} min-h-screen`}>
-          <main className="content">{children}</main>
-        </body>
-      </html>
-    </UserProvider>
-  );
-}
+// export default function RootLayout({ children }) {
+//   return (
+//     <UserProvider>
+//     <html lang="en">
+//         <body className={`${inter.className} min-h-screen`}>
+//           <main className="content">{children}</main>
+//         </body>
+//       </html>
+//     </UserProvider>
+//   );
+// }
 
-export function generateMetadata() {
-  return {
-    title: 'Study Straight',
-    description: 'Study planning and organization tool'
-  }
-}
+// export function generateMetadata() {
+//   return {
+//     title: 'Study Straight',
+//     description: 'Study planning and organization tool'
+//   }
+// }
 
 
 

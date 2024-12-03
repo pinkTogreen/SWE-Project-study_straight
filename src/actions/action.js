@@ -45,10 +45,19 @@ export const addAccount = async (username, password) => {
 }
 
 export const addTask = async (taskDetails) => {
-	taskDetails.description === "" ? "No description provided." : taskDetails.description;
+	if(taskDetails.description === "")
+		 taskDetails.description = "No description provided."
 	taskDetails.user = theCurrentUser;
 	console.log(taskDetails);
 	await handleTask('POST', taskDetails);
+}
+
+export const addSession = async (sessDetails) => {
+	if(sessDetails.notes === "")
+		 sessDetails.notes = "No notes provided."
+	sessDetails.user = theCurrentUser;
+	console.log(sessDetails);
+	await handleSession('POST', sessDetails);
 }
 
 export const getSchedule = async() => {
