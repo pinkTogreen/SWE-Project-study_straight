@@ -18,6 +18,8 @@ export default function Signup(){
         event.preventDefault();
         const formData = { username, password }; 
 
+        //get the form data, check
+
         if (!username || !password) {
             alert("Please complete both fields.");
             return;
@@ -26,13 +28,28 @@ export default function Signup(){
             alert("Passwords do not match.");
             return;
         }
-        const signupSuccessful = await addAccount(username, password); 
 
-        if (signupSuccessful) {
+        const res = await fetch(`/api/auth/signup?username=${username}`, 
+        {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        if(res.status === 200)
+        {   
+            console.log("itso k");
+            const res = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            sessionStorage.setItem('currentUser', username);
             setCurrentUser(username);
             router.push('/Page_Profile');
-        } else {
-            console.log('Login failed');
+
         }
     }
 

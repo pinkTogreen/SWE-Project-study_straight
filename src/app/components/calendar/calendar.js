@@ -88,6 +88,12 @@ export default function Calendar({ onDateSelect }) {
     useEffect(() => {
         fetchAndSetTasks();
     }, []);
+    
+    useEffect(() => {
+        if (calendarApi) {
+            calendarApi.refetchEvents(); // Force calendar to reload events
+        }
+    }, [events]);
 
     return (
         <div className="calendar-wrapper">

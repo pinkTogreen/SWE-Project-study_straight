@@ -1,15 +1,15 @@
-import { connectDB } from '@/lib/db';
+import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 import { NextResponse } from 'next/server';
-
 // GET: Check if a username already exists
 export async function GET(req) {
     try {
-        const { username } = await req.json();
-        console.log('Checking if username exists:', username);
-
         await connectDB();
         console.log('Connected to MongoDB');
+
+        let url = new URL(req.url);
+        let params = new URLSearchParams(url.searchParams)
+        let username = params.get('username');
 
         const user = await User.findOne({ username });
         console.log('User found:', !!user);
@@ -22,7 +22,7 @@ export async function GET(req) {
         }
 
         return NextResponse.json(
-            { message: "This username is available.", exists: false },
+            { message: "This username is available."},
             { status: 200 } // OK, username is available
         );
     } catch (error) {
