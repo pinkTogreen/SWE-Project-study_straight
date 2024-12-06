@@ -1,16 +1,14 @@
 'use client'
 import { useState, useEffect } from "react"
 import Calendar from "../components/calendar/calendar"
-import handleCourse from "@/api/course.js"
-import { addTask } from "@/actions/action"
-import { addSession } from "@/actions/action"
+import handleCourse from "@/api/course.js";
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import { useRouter } from 'next/navigation';
+import { forwardRef } from "react";
 import "./courseForm.css"
 
-export default function CourseForm() {
-    const { currentUser } = useUser();
+export default function CalendarGUI() {
     const router = useRouter();
     const [selectedDate, setSelectedDate] = useState(null);
     const [courseError, setCourseError] = useState('');
@@ -19,9 +17,8 @@ export default function CourseForm() {
         description: "",
         term: "",
         year: new Date().getFullYear(),
-        username: currentUser
+        // username: currentUser
     });
-
     const [taskData, setTaskData] = useState({
         title: "",
         description: "",
@@ -35,15 +32,17 @@ export default function CourseForm() {
         date: "",
     });
 
-    useEffect(() => {
-        if (!currentUser) {
-            router.push('/Page_Login');
-        }
-    }, [currentUser, router]);
+    ///Calendar stuff///
+    const [events, setEvents] = useState([]);
+
+    // useEffect(() => {
+    //     if (!currentUser) {
+    //         router.push('/Page_Login');
+    //     }
+    // }, [currentUser, router]);
 
     //setting the form type
     const[activeForm, setActiveForm] = useState("task"); 
-  
 
     const handleDateSelect = (date) => {
         setSelectedDate(date);
@@ -56,6 +55,10 @@ export default function CourseForm() {
         }
     
     };
+
+    const handleEventClick = () => {
+        console.log("what");
+    }
 
     //cancelling form submission
     const handleCancel = () =>{
@@ -159,15 +162,22 @@ export default function CourseForm() {
     //submitting task input
     const handleTaskSubmit = async (e) => {
         e.preventDefault();
-        // //console.log('Task submitted:', { ...taskData, date: selectedDate });
         taskData.date = new Date(selectedDate);
-        await addTask(taskData);
+        taskData.user = sessionStorage.getItem('currentUser');
+        const res = await fetch('/api/tasks', 
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(taskData),
+            });
         handleCancel();
+        if (res.ok) {
+            handleCancel();
+        }
+        //console.log(events);
     };
-    
 
     ///// SESSION SECTION /////
-    //INPUT
     const handleSessionChange = (e) => {
         const { name, value } = e.target;
         setSessionData(prev => ({
@@ -175,23 +185,38 @@ export default function CourseForm() {
             [name]: value
         }));
     };
-
-    //SUBMIT
     const handleSessionSubmit = async (e) => {
         e.preventDefault();
         sessionData.date = new Date(selectedDate);
-        await addSession(sessionData);
+        sessionData.user = sessionStorage.getItem('currentUser');
+        const res = await fetch('/api/sessions', 
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(sessionData),
+            });
         handleCancel();
+        if (res.ok) {
+            handleCancel();
+            if (calendarRef.current) {
+                const calendarApi = calendarRef.current.getApi();
+                if (calendarApi) {
+                    calendarApi.refetchEvents(); // Refetch events
+                }
+            }
+        }
     };
-
 
 
     return (
         <div className="layout-container">
             <div className="calendar-container">
-                <Calendar onDateSelect={handleDateSelect} />
+                <Calendar 
+                    onDateSelect={handleDateSelect} 
+                    eventClick={handleEventClick} 
+                />
             </div>
-
+            {/* on this part, before the selected date, you want to display immediate tasks to the side */}
             {selectedDate && (<div className="form-container">
                 <div className="form-wrapper">
                     <div className="choice-wrapper">

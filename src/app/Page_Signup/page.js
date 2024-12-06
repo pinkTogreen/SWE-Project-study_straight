@@ -23,7 +23,7 @@ export default function Signup(){
             return;
         }
         if(retypePass != password){
-            alert("Passwords do no match.");
+            alert("Passwords do not match.");
             return;
         }
         const signupSuccessful = await addAccount(username, password); 

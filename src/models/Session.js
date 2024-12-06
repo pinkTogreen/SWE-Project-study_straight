@@ -8,18 +8,18 @@ const sessSchema = new mongoose.Schema({
 	},
 	Notes: {
 		type: String,
+        default: '',
 	},
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     duration: {
 		type: Number,
 	},
-    status:{ // Unsure if we should keep this
-        type: String,
-        enum: ['Incomplete', 'Completed'],
-        default: "Incomplete",
+    completed:{
+        type: Boolean,
+        default: false,
     },
     tasks: [ // What tasks are the user trying to complete during the session?
         {

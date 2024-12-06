@@ -1,23 +1,12 @@
 import dbConnect from '@/lib/db'
 import Task from '@/models/Task';
 
-//updating tasks
-//deleting tasks
-//retrieving tasks
-
 export default async function handleTask (req, userData){
-    /*
-    KINDS OF INPUT:
-    -"POST", an object, containing all required information from task
-    -"PUT" a piece of information to add or change, example {title: "new name"}
-    -"GET", a username to find all associated tasks with the person
-    -"DELETE", deleting an existing task, requires the exact information (object ID?)
-    */
     await dbConnect();
 
     switch (req){
         case "GET": //retrieving all tasks under a current user
-            return await fetch(userData); //needs an object ID to find all tasks of that user
+            return await fetchTasks(userData); //needs an object ID to find all tasks of that user
         case "POST": //adding a new task
             return await addTask(userData);
         case "PUT": //updating the task with the required information
@@ -31,7 +20,7 @@ export default async function handleTask (req, userData){
 }
 
 async function fetchTasks(username){
-    const user = await Task.findMany({id: username});
+    const user = await Task.find({user: username}).lean();
     return user;
 }       
 
@@ -42,7 +31,7 @@ async function addTask(taskInfo) {
   
       // Save the new task to the database
       await newTask.save();
-  
+
       console.log("Task successfully saved:", newTask);
     } catch (error) {
       // Handle and log any errors during the process
