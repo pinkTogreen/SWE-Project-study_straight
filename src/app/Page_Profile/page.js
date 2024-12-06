@@ -59,6 +59,7 @@ export default function ProfilePage() {
     }, [currentUser]);
 
     const sortedCourses = useMemo(() => {
+        console.log(courses);
         return [...courses].sort((a, b) => {
             if (a.term === b.term) {
                 return a.name.localeCompare(b.name);
@@ -176,7 +177,7 @@ export default function ProfilePage() {
                                 onClick={() => handleDeleteCourse(course._id)}
                                 title="Delete course"
                             >
-                                −
+                                − 
                             </button>
                         </li>
                     ))}

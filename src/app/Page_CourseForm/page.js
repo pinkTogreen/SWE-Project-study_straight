@@ -7,11 +7,15 @@ import { useUser } from '../context/UserContext';
 import { useRouter } from 'next/navigation';
 import { forwardRef } from "react";
 import "./courseForm.css"
+import { sortedCourses } from "../Page_Profile/page.js";
+import { getUserCourses } from "@/api/course.js";
 
 export default function CalendarGUI() {
     const router = useRouter();
     const [selectedDate, setSelectedDate] = useState(null);
     const [courseError, setCourseError] = useState('');
+    const [sortedCourses, setSortedCourses] = useState([]); // State to hold fetched courses
+    const [isLoadingCourses, setIsLoadingCourses] = useState(true); // Loading state
     const [courseData, setCourseData] = useState({
         name: "",
         description: "",
@@ -19,11 +23,33 @@ export default function CalendarGUI() {
         year: new Date().getFullYear(),
         // username: currentUser
     });
+
+    useEffect(() => {
+        async function fetchSortedCourses() {
+            try {
+                const response = await fetch("/api/courses"); // Adjust endpoint if necessary
+                if (response.ok) {
+                    const data = await response.json();
+                    setSortedCourses(data); // Assume `data` contains sorted courses
+                } else {
+                    console.error("Failed to fetch courses:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+            } finally {
+                setIsLoadingCourses(false); // Mark as done loading
+            }
+        }
+
+        fetchSortedCourses();
+    }, []); // Runs only once when component mounts
+
     const [taskData, setTaskData] = useState({
         title: "",
         description: "",
         priority: "MED",
-        date: ""
+        relatedClass: "",
+        date: "",
     });
     const [sessionData, setSessionData] = useState({
         title: "",
@@ -50,7 +76,8 @@ export default function CalendarGUI() {
             setTaskData({
                 title: "",
                 description: "",
-                priority: "MED"
+                priority: "MED",
+                relatedClass: "",
             });
         }
     
@@ -78,7 +105,8 @@ export default function CalendarGUI() {
             setTaskData({
                 title: "",
                 description: "",
-                priority: "MED"
+                priority: "MED",
+                relatedClass: "",
             });
         
         else if (switchedTo === "task")
@@ -91,7 +119,63 @@ export default function CalendarGUI() {
 
     }
 
-    
+    /////COURSE SECTION//////
+    //Course Input
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     console.log(`Handling input change for ${name}:`, value);
+    //     setCourseData(prev => ({
+    //         ...prev,
+    //         [name]: name === 'year' ? parseInt(value, 10) : value,
+    //         username: currentUser
+    //     }));
+    // };
+
+    //Submitting course input
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setCourseError('');
+    //     try {
+    //         const courseWithUsername = {
+    //             ...courseData,
+    //             username: currentUser,
+    //             year: parseInt(courseData.year, 10)
+    //         };
+            
+    //         console.log('Submitting course data:', courseWithUsername);
+            
+    //         const response = await fetch('/api/courses', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(courseWithUsername),
+    //         });
+
+    //         const data = await response.json();
+    //         console.log('Server response:', data);
+
+    //         if (!response.ok) {
+    //             if (response.status === 400) {
+    //                 setCourseError(data.error);
+    //                 return;
+    //             }
+    //             throw new Error(data.error || 'Failed to add course');
+    //         }
+
+    //         setCourseData({
+    //             name: "",
+    //             description: "",
+    //             term: "",
+    //             year: new Date().getFullYear(),
+    //             username: currentUser
+    //         });
+            
+    //     } catch (error) {
+    //         console.error("Error adding course:", error);
+    //         setCourseError('Failed to add course');
+    //     }
+    // };
 
     ///// TASKS SECTION /////
     //task input
@@ -108,6 +192,7 @@ export default function CalendarGUI() {
         e.preventDefault();
         taskData.date = new Date(selectedDate);
         taskData.user = sessionStorage.getItem('currentUser');
+        console.log(taskData);
         const res = await fetch('/api/tasks', 
             {
                 method: 'POST',
@@ -150,7 +235,6 @@ export default function CalendarGUI() {
             }
         }
     };
-
 
     return (
         <div className="layout-container">
@@ -220,7 +304,24 @@ export default function CalendarGUI() {
                                         <option value="HIGH">High</option>
                                     </select>
                                 </div>
-
+                                <div className="form-field">
+                                    <label>Related Class:</label>
+                                    <select
+                                        name="relatedClass"
+                                        value={taskData.relatedClass}
+                                        onChange={handleTaskChange}
+                                    >
+                                        {isLoadingCourses ? (
+                                            <option value="">Loading courses...</option>
+                                        ) : (
+                                            sortedCourses.map((course) => (
+                                                <option key={course._id} value={course.name}>
+                                                    {course.name}
+                                                </option>
+                                            ))
+                                        )}
+                                    </select>
+                                </div>
                                 <button type="submit" className="submit-button">
                                     Add Task
                                 </button>
@@ -310,7 +411,7 @@ function DisplayTasksRight() {
                     <div key={i}>
                         <TaskBox task={task} />
                     </div>
-                    
+
                 ))}
             </div>
         </div>
@@ -333,6 +434,82 @@ function TaskBox({ task }) {
             <p>{task.description}</p>
             <p>Due: {new Date(task.date).toLocaleDateString()}</p>
             <p>Priority: {task.priority}</p>
+            <p>Related Class: {task.relatedClass}</p>
         </div>
     );
 }
+
+
+/* <h2 className="form-title">Add Course</h2>
+                    <form onSubmit={handleSubmit} className="course-form">
+                        <div className="form-field">
+                            <label>Course Name:</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={courseData.name}
+                                onChange={handleInputChange}
+                                required
+                            />
+                            {courseError && (
+                                <div style={{ color: 'red', fontSize: '0.8rem', marginTop: '4px' }}>
+                                    {courseError}
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div className="form-field">
+                            <label>Description:</label>
+                            <textarea
+                                name="description"
+                                value={courseData.description}
+                                onChange={handleInputChange}
+                                rows="3"
+                                required
+                            />
+                        </div>
+                        
+                        <div className="form-field">
+                            <label>Term:</label>
+                            <select
+                                name="term"
+                                value={courseData.term}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="">Select Term</option>
+                                <option value="Fall">Fall</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
+                            </select>
+                        </div>
+                        
+                        <div className="form-field">
+                            <label>Year:</label>
+                            <input
+                                type="number"
+                                name="year"
+                                value={courseData.year}
+                                onChange={handleInputChange}
+                                min="2024"
+                                max="2030"
+                                required
+                            />
+                        </div>
+                        
+                        <button type="submit" className="submit-button">
+                            Add Course
+                        </button>
+
+
+                        <Link href="/Page_Profile" style={{ width: '100%' }}>
+                            <button className="fade submit-button" style={{ width: '100%' }}>
+                                View Profile
+                            </button>
+
+                        <Link href="/Page_Profile">
+                        <button className="fade">View Profile</button>
+
+                        </Link>
+                        
+                    </form> */

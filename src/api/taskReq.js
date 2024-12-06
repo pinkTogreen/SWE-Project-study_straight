@@ -34,6 +34,7 @@ async function addTask(taskInfo) {
         priority: taskInfo.priority,
         description: taskInfo.description,
         date: taskInfo.date,
+        relatedClass: taskInfo.relatedClass,
         // completed defaults 
         user: taskInfo.user
       });
