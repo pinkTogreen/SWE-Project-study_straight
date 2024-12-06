@@ -1,11 +1,10 @@
 'use client'
 import { useState } from "react"
 import { login } from "@/actions/action"
-// import styles from "./loginForm.css"
-// import styles from "../components/calendar/calendar.css"
+import "./loginForm.css"
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import { useUser } from '../context/UserContext'; // Import the useUser hook
+import { useUser } from '../context/UserContext';
 
 //add a use state so that you can call a function when the submit button is clicked, 
 //ensure that the error message is only shown after inputting bad data, and it's removed when the user begins entering new data
