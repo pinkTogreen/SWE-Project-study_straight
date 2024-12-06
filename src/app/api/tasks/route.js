@@ -11,8 +11,13 @@ export async function GET(req) {
         let url = new URL(req.url);
         let params = new URLSearchParams(url.searchParams)
         let username = params.get('username');
+        let limit = parseInt(params.get('limit'), 10);
 
-        const tasks = await Task.find({ user: username });
+        if (isNaN(limit) || limit <= 0) {
+            limit = 100;
+        }
+
+        const tasks = await Task.find({ user: username }).limit(limit);
        
         if (tasks.length === 0) {
             return NextResponse.json({ error: 'No tasks found for this user' }, { status: 404 });

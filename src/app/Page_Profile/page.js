@@ -63,6 +63,21 @@ export default function ProfilePage() {
         router.push('/Page_Login');
     };
 
+    const handleDeleteCourse = async (courseId) => {
+        try {
+            const response = await fetch(`/api/courses/${courseId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                // Remove course from state
+                setCourses(courses.filter(course => course._id !== courseId));
+            }
+        } catch (error) {
+            console.error('Error deleting course:', error);
+        }
+    };
+
     if (!mounted) {
         return null;
     }
@@ -82,10 +97,19 @@ export default function ProfilePage() {
                 <ul className="courseList">
                     {sortedCourses.map((course) => (
                         <li key={course._id} className="courseItem">
-                            <span className="courseName">{course.name}</span> - 
-                            <span className="courseDescription">{course.description}</span> - 
-                            <span className="courseTerm">{course.term}</span>   
-                            <span className="courseYear">{course.year}</span>
+                            <div className="course-content">
+                                <span className="courseName">{course.name}</span> - 
+                                <span className="courseDescription">{course.description}</span> - 
+                                <span className="courseTerm">{course.term}</span>   
+                                <span className="courseYear">{course.year}</span>
+                            </div>
+                            <button 
+                                className="delete-button" 
+                                onClick={() => handleDeleteCourse(course._id)}
+                                title="Delete course"
+                            >
+                                −
+                            </button>
                         </li>
                     ))}
                 </ul>

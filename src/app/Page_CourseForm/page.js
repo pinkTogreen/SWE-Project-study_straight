@@ -217,6 +217,11 @@ export default function CalendarGUI() {
                 />
             </div>
             {/* on this part, before the selected date, you want to display immediate tasks to the side */}
+            
+            {!selectedDate && 
+            <div className="form-container">
+            DisplayTasksRight()
+            </div>}
             {selectedDate && (<div className="form-container">
                 <div className="form-wrapper">
                     <div className="choice-wrapper">
@@ -328,6 +333,62 @@ export default function CalendarGUI() {
                 </div>
             </div>)}
             
+        </div>
+    );
+}
+
+
+function DisplayTasksRight() {
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        async function fetchTasks(limit = 5) {
+            const username = sessionStorage.getItem('currentUser');
+            try {
+                const response = await fetch(`/api/tasks?username=${username}&limit=${limit}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    // Sort tasks by due date or priority (if needed)
+                    const sortedTasks = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    setTasks(sortedTasks);
+                } else {
+                    console.error('Failed to fetch tasks:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
+        }
+        fetchTasks();
+    }, []); // Empty dependency array to run once on mount
+
+    return (
+        <div>
+            <h2>Your Agenda</h2>
+            <div>
+                {tasks.map((task) => (
+                    <TaskBox key={task.id} task={task} />
+                ))}
+            </div>
+        </div>
+    );
+}
+
+
+function TaskBox({ task }) {
+    const taskBoxStyle = {
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        padding: "10px",
+        margin: "10px 0",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    };
+
+    return (
+        <div style={taskBoxStyle}>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+            <p>Due: {new Date(task.date).toLocaleDateString()}</p>
+            <p>Priority: {task.priority}</p>
         </div>
     );
 }

@@ -1,6 +1,3 @@
-
-/* 
-
 .container {
     display: flex;
     justify-content: center;
@@ -19,20 +16,21 @@
     box-shadow: 4px 5px 12px 0px rgba(151,184,200,0.51);
 }
 
-
 .message {
-=======
-h1{
     text-align: center;
+    color: #8eb5ca;
+    font-size: small;
+    font-weight: bold;
+    margin-top: 20px;
+    line-height: 0.5;
 }
 
-h2{
+h2 {
     margin-top: 30px;
     color: #495962;
 }
 
-
-input{
+input {
     border: 2px solid #93cfe31b;
     border-radius: 5px;
     background-color: #f1f7f9;
@@ -44,33 +42,22 @@ input{
 
 input::placeholder {
     opacity: 0.15;
-    color:#093651;
+    color: #093651;
     font-weight: bold;
     text-align: center;
 }
 
 .fade {
-    background-color:  #8bc9de;
-    color:  #ffffff;
+    background-color: #8bc9de;
+    color: #ffffff;
     transition: background-color 0.3s;
 }
 
 .fade:hover {
-    background-color:  #6fb2ca;
+    background-color: #6fb2ca;
 }
 
-.message{
-    text-align: center;
-    color: #8eb5ca;
-    font-size: small;
-    font-weight: bold;
-    margin-top: 20px;
-    line-height: 0.5;
-}
-
-
-
-button{
+button {
     border: none;
     border-radius: 20px;
     margin-top: 10px;
@@ -80,55 +67,4 @@ button{
     cursor: pointer;
     transition: background-color 0.3s, #ffffff 1s;
 }
-
-.profileContainer {
-    text-align: center;
-    padding: 2rem;
-}
-
-.welcomeBanner {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    color: #333;
-}
-
-.coursesTitle {
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.courseList {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 600px;
-}
-
-.courseItem {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.courseName {
-    font-weight: bold;
-    margin-right: 0.5rem;
-}
-
-.courseDescription,
-.courseTerm,
-.courseYear {
-    margin-left: 0.25rem;
-    color: #555;
-}
-
-.noCoursesMessage {
-    font-size: 1.2rem;
-    color: #777;
-}
- */
 
