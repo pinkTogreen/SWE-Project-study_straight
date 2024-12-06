@@ -23,26 +23,22 @@ export default function CalendarGUI() {
         year: new Date().getFullYear(),
         // username: currentUser
     });
+    const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        async function fetchSortedCourses() {
-            try {
-                const response = await fetch("/api/courses"); // Adjust endpoint if necessary
-                if (response.ok) {
-                    const data = await response.json();
-                    setSortedCourses(data); // Assume `data` contains sorted courses
-                } else {
-                    console.error("Failed to fetch courses:", response.statusText);
-                }
-            } catch (error) {
-                console.error("Error fetching courses:", error);
-            } finally {
-                setIsLoadingCourses(false); // Mark as done loading
-            }
-        }
-
-        fetchSortedCourses();
-    }, []); // Runs only once when component mounts
+        // Wrap the logic in an async function
+        const fetchCourses = async () => {
+          const user = sessionStorage.getItem("currentUser");
+          console.log("user", user);
+          
+          // Assuming getUserCourses is a function that fetches courses
+          const fetchedCourses = await getUserCourses(user);
+          setCourses(fetchedCourses);
+          console.log("courses", fetchedCourses);
+        };
+        setIsLoadingCourses(false);
+        fetchCourses();
+      }, []); // Runs only once when component mounts
 
     const [taskData, setTaskData] = useState({
         title: "",
@@ -314,7 +310,7 @@ export default function CalendarGUI() {
                                         {isLoadingCourses ? (
                                             <option value="">Loading courses...</option>
                                         ) : (
-                                            sortedCourses.map((course) => (
+                                            courses.map((course) => (
                                                 <option key={course._id} value={course.name}>
                                                     {course.name}
                                                 </option>

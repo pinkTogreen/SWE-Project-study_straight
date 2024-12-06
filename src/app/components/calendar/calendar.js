@@ -19,7 +19,8 @@ export default function Calendar({ onDateSelect }) {
           allDay: true, // Assuming tasks are all-day events
           description: task.description || '', // Task description
           completed: task.completed, // Custom property to track completion
-          backgroundColor: task.completed ? '#d3d3d3' : '#5bc0de', // Grey for completed, blue for incomplete
+          backgroundColor: task.priority === "HIGH" ? '#ff6666' : task.priority === "MED" ? "#ffd966": "#99ff99", // Grey for completed, blue for incomplete
+          borderColor: task.priority === "HIGH" ? '#ff6666' : task.priority === "MED" ? "#ffd966": "#99ff99",
           textColor: task.completed ? '#808080' : '#000000', // Optional: Grey text for completed
           extendedProps: { // Add any additional properties here
             priority: task.priority,
