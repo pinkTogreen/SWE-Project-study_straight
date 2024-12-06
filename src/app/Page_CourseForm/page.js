@@ -218,10 +218,7 @@ export default function CalendarGUI() {
             </div>
             {/* on this part, before the selected date, you want to display immediate tasks to the side */}
             
-            {!selectedDate && 
-            <div className="form-container">
-            DisplayTasksRight()
-            </div>}
+            {!selectedDate && DisplayTasksRight()}
             {selectedDate && (<div className="form-container">
                 <div className="form-wrapper">
                     <div className="choice-wrapper">
