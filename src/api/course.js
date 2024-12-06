@@ -3,7 +3,7 @@ import dbConnect from '@/lib/db'
 import Course from '@/models/Course';
 
 export default async function handleCourse (req, userData){
-    await dbConnect(); //we can't rely on the same connection all the time, learning things as we go
+    await dbConnect();
     switch (req){
         case "GET": //retrieving information related to the course
             return await fetch(userData); 

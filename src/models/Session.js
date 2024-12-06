@@ -6,7 +6,7 @@ const sessSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	description: {
+	Notes: {
 		type: String,
 	},
     date: {
@@ -27,13 +27,14 @@ const sessSchema = new mongoose.Schema({
           ref: 'Task', // Referencing the Task schema
         },
     ],
-    userId: { // Who is the session associated with?
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Referencing the Task schema
+    user: {
+        type: String,
+        requred: true
     },
-    notes:{ //additonal notes of the session that the user might want to add
-        type: [String],
-    },
+    // userId: { // Who is the session associated with?
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User', // Referencing the Task schema
+    // },
 })
 
 export default mongoose.models.Session || mongoose.model('Session', sessSchema)

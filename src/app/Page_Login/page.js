@@ -1,7 +1,8 @@
 'use client'
 import { useState } from "react"
 import { login } from "@/actions/action"
-import styles from "./loginForm.css"
+// import styles from "./loginForm.css"
+// import styles from "../components/calendar/calendar.css"
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import { useUser } from '../context/UserContext'; // Import the useUser hook
@@ -46,24 +47,29 @@ export default function Page(){
             sessionStorage.setItem('currentUser', username);
             setCurrentUser(username);
             router.push('/Page_Profile');
+
             
         } catch (error) {
             setError('An error occurred during login');
             console.error('Login error:', error);
         }
+
+        // } else {alert("Incorrect username or password")}
+
     }
 
     return (
         <div className = "container">
             <div className = "login-box">
-
                 <h2>Login</h2>
+
 
                 {error && (
                     <div style={{ color: 'red', marginBottom: '10px', textAlign: 'center' }}>
                         {error}
                     </div>
                 )}
+
 
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -91,7 +97,6 @@ export default function Page(){
                     <Link href="/Page_Signup"> <u>Sign up today!</u> </Link>
                 </div>
             </div>
-
         </div>
     )
 }

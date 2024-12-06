@@ -14,17 +14,21 @@ const taskSchema = new mongoose.Schema({
 		type: String,
 	},
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     completed:{
         type: Boolean,
+        default: false,
+    },
+    user:{
+        type: String,
         required: true
     },
-    userId: { // Who is the task associated with?
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', //referencing the course schema
-    },
+    // userId: { // Who is the task associated with?
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User', //referencing the course schema
+    // },
     courseId: { //Which course is the task associated with?
         // type: mongoose.Schema.Types.ObjectId,
         type: String,

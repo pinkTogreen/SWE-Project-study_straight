@@ -5,7 +5,7 @@ import Task from '@/models/Task';
 //deleting tasks
 //retrieving tasks
 
-export default async function handleUserRequest (req, userData){
+export default async function handleTask (req, userData){
     /*
     KINDS OF INPUT:
     -"POST", an object, containing all required information from task
@@ -19,7 +19,7 @@ export default async function handleUserRequest (req, userData){
         case "GET": //retrieving all tasks under a current user
             return await fetch(userData); //needs an object ID to find all tasks of that user
         case "POST": //adding a new task
-            return await add(userData);
+            return await addTask(userData);
         case "PUT": //updating the task with the required information
             return await update(userData);    
         //we need to check which kind of information we want to update, and for which task
@@ -35,11 +35,23 @@ async function fetchTasks(username){
     return user;
 }       
 
-async function addTask(taskInfo){
-    //takes the entered object and turns it into a model which can be entered into the database
-    let newTask = new Task(taskInfo);
-    newTask.save();
-}
+async function addTask(taskInfo) {
+    try {
+      // Convert the entered object into a Task model
+      let newTask = new Task(taskInfo);
+  
+      // Save the new task to the database
+      await newTask.save();
+  
+      console.log("Task successfully saved:", newTask);
+    } catch (error) {
+      // Handle and log any errors during the process
+      console.error("Error adding task:", error.message);
+  
+      // Optionally, throw the error again if the caller needs to handle it
+      throw error;
+    }
+  }
 
 async function deleteTask(taskInfo){ //it would be better to obtain the task ID instead? or...
     //takes the entered object and turns it into a model which can be entered into the database
