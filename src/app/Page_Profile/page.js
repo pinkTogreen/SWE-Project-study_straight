@@ -110,9 +110,9 @@ export default function ProfilePage() {
                 username: currentUser,
                 year: parseInt(courseData.year, 10)
             };
-           
+            
             console.log('Submitting course data:', courseWithUsername);
-           
+            
             const response = await fetch('/api/courses', {
                 method: 'POST',
                 headers: {
@@ -132,6 +132,10 @@ export default function ProfilePage() {
                 throw new Error(data.error || 'Failed to add course');
             }
 
+            // Add the new course to the courses state
+            setCourses(prevCourses => [...prevCourses, data]);
+
+            // Reset the form
             setCourseData({
                 name: "",
                 description: "",
@@ -139,7 +143,7 @@ export default function ProfilePage() {
                 year: new Date().getFullYear(),
                 username: currentUser
             });
-           
+            
         } catch (error) {
             console.error("Error adding course:", error);
             setCourseError('Failed to add course');
