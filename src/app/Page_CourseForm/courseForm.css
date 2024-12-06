@@ -53,8 +53,24 @@
 }
 
 .submit-button {
+    display: flex;
     width: 100%;
     margin-top: 10px;
+}
+
+.active-button {
+    background: #007bff !important;
+    color: white !important;
+    border: none;
+}
+
+.generic-button {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid black;
+    background: rgb(255, 255, 255);
+    color: black;
+    padding: 8px;
 }
 
 .task-form {
@@ -67,3 +83,7 @@
     width: 100%;
     box-sizing: border-box;
 } 
+
+.choice-wrapper {
+    display: flex;
+}

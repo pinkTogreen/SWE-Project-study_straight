@@ -247,13 +247,13 @@ export default function CalendarGUI() {
                 <div className="form-wrapper">
                     <div className="choice-wrapper">
                         <button
-                            className={activeForm === "task" ? "active-button" : ""}
+                            className={activeForm === "task" ? "active-button generic-button" : "generic-button"}
                             onClick={() => toggleForm("task")}
                         >
                             Task
                         </button>
                         <button
-                            className={activeForm === "session" ? "active-button" : ""}
+                            className={activeForm === "session" ? "active-button generic-button" : "generic-button"}
                             onClick={() => toggleForm("session")}
                         >
                             Session
@@ -318,7 +318,7 @@ export default function CalendarGUI() {
                                         )}
                                     </select>
                                 </div>
-                                <button type="submit" className="submit-button">
+                                <button type="submit" className="submit-button generic-button">
                                     Add Task
                                 </button>
                             </form>
@@ -367,7 +367,7 @@ export default function CalendarGUI() {
                             </form>
                         </div>
                     )}
-                    <button onClick = {handleCancel}>Cancel</button>
+                    <button className='generic-button' onClick = {handleCancel}>Cancel</button>
                 </div>
             </div>)}
             
@@ -430,7 +430,7 @@ function TaskBox({ task }) {
             <p>{task.description}</p>
             <p>Due: {new Date(task.date).toLocaleDateString()}</p>
             <p>Priority: {task.priority}</p>
-            <p>Related Class: {task.relatedClass}</p>
+            {/* <p>Related Class: {task.relatedClass}</p> */}
         </div>
     );
 }
