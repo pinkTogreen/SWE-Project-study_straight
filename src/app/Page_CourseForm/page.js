@@ -162,10 +162,7 @@ export default function CalendarGUI() {
             </div>
             {/* on this part, before the selected date, you want to display immediate tasks to the side */}
             
-            {!selectedDate && 
-            <div className="form-container">
-            DisplayTasksRight()
-            </div>}
+            {!selectedDate && <DisplayTasksRight/>}
             {selectedDate && (<div className="form-container">
                 <div className="form-wrapper">
                     <div className="choice-wrapper">
@@ -309,8 +306,11 @@ function DisplayTasksRight() {
         <div>
             <h2>Your Agenda</h2>
             <div>
-                {tasks.map((task) => (
-                    <TaskBox key={task.id} task={task} />
+                {tasks.map((task, i) => (
+                    <div key={i}>
+                        <TaskBox task={task} />
+                    </div>
+                    
                 ))}
             </div>
         </div>
