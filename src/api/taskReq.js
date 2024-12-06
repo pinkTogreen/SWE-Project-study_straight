@@ -27,11 +27,20 @@ async function fetchTasks(username){
 async function addTask(taskInfo) {
     try {
       // Convert the entered object into a Task model
-      let newTask = new Task(taskInfo);
+      // let newTask = new Task(taskInfo);
+      // must be explicit to save user (only add user input and user)
+      const newTask = new Task({
+        title: taskInfo.title,
+        priority: taskInfo.priority,
+        description: taskInfo.description,
+        date: taskInfo.date,
+        // completed defaults 
+        user: taskInfo.user
+      });
   
       // Save the new task to the database
       await newTask.save();
-
+  
       console.log("Task successfully saved:", newTask);
     } catch (error) {
       // Handle and log any errors during the process
@@ -41,6 +50,7 @@ async function addTask(taskInfo) {
       throw error;
     }
   }
+
 
 async function deleteTask(taskInfo){ //it would be better to obtain the task ID instead? or...
     //takes the entered object and turns it into a model which can be entered into the database

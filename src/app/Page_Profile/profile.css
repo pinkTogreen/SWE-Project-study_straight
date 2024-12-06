@@ -88,3 +88,110 @@
     font-size: 1.2rem;
     color: #777;
 } 
+
+.course-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px; 
+    flex-wrap: wrap; 
+    margin-bottom: 15px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    min-width: 200px; 
+}
+
+.form-field label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.course-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 15px; 
+    flex-wrap: wrap; 
+    margin-bottom: 15px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1; 
+    min-width: 200px; 
+    gap: 5px; 
+}
+
+.form-field label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    align-self: center; 
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px; 
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}

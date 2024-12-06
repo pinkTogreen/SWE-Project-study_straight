@@ -47,10 +47,21 @@ export const addAccount = async (username, password) => {
 export const addTask = async (taskDetails) => {
 	if(taskDetails.description === "")
 		 taskDetails.description = "No description provided."
-	taskDetails.user = 'sigma';
-	console.log(taskDetails);
-	await handleTask('POST', taskDetails);
+	// Convert the entered object into a Task model
+      // let newTask = new Task(taskInfo);
+      // must be explicit to save user (only add user input and user)
+      const newTask = new Task({
+        title: taskDetails.title,
+        priority: taskDetails.priority,
+        description: taskDetails.description,
+        date: taskDetails.date,
+        // completed defaults 
+        user: taskDetails.user
+      });
+	console.log(newTask);
+	await handleTask('POST', newTask);
 }
+
 
 export const addSession = async (sessDetails) => {
 	if(sessDetails.notes === "")

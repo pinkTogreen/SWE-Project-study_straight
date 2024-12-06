@@ -13,6 +13,15 @@ export default function ProfilePage() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [mounted, setMounted] = useState(false);
+    const [courseError, setCourseError] = useState('');
+    const [courseData, setCourseData] = useState({
+        name: "",
+        description: "",
+        term: "",
+        year: new Date().getFullYear(),
+        username: currentUser
+    });
+
 
     useEffect(() => {
         setMounted(true);
@@ -78,6 +87,65 @@ export default function ProfilePage() {
         }
     };
 
+    /////COURSE SECTION//////
+    //Course Input
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        console.log(`Handling input change for ${name}:`, value);
+        setCourseData(prev => ({
+            ...prev,
+            [name]: name === 'year' ? parseInt(value, 10) : value,
+            username: currentUser
+        }));
+   };
+
+   //Submitting course input
+   const handleSubmit = async (e) => {
+        e.preventDefault();
+        setCourseError('');
+        try {
+            const courseWithUsername = {
+                ...courseData,
+                username: currentUser,
+                year: parseInt(courseData.year, 10)
+            };
+           
+            console.log('Submitting course data:', courseWithUsername);
+           
+            const response = await fetch('/api/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(courseWithUsername),
+            });
+
+            const data = await response.json();
+            console.log('Server response:', data);
+
+            if (!response.ok) {
+                if (response.status === 400) {
+                    setCourseError(data.error);
+                    return;
+                }
+                throw new Error(data.error || 'Failed to add course');
+            }
+
+            setCourseData({
+                name: "",
+                description: "",
+                term: "",
+                year: new Date().getFullYear(),
+                username: currentUser
+            });
+           
+        } catch (error) {
+            console.error("Error adding course:", error);
+            setCourseError('Failed to add course');
+        }
+   };
+
+
     if (!mounted) {
         return null;
     }
@@ -116,6 +184,67 @@ export default function ProfilePage() {
             ) : (
                 <p className="noCoursesMessage">No courses found.</p>
             )}
+
+<h2 className="form-title">Add Course</h2>
+            <form onSubmit={handleSubmit} className="course-form">
+                <div className="form-row">
+                    <div className="form-field">
+                        <label>Course Name:</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={courseData.name}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-field">
+                        <label>Description:</label>
+                        <textarea
+                            name="description"
+                            value={courseData.description}
+                            onChange={handleInputChange}
+                            rows="2"
+                            required
+                        />
+                    </div>
+                    <div className="form-field">
+                        <label>Term:</label>
+                        <select
+                            name="term"
+                            value={courseData.term}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">Select Term</option>
+                            <option value="Fall">Fall</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Summer">Summer</option>
+                        </select>
+                    </div>
+                    <div className="form-field">
+                        <label>Year:</label>
+                        <input
+                            type="number"
+                            name="year"
+                            value={courseData.year}
+                            onChange={handleInputChange}
+                            min="2024"
+                            max="2030"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="submit-button">
+                        Add Course
+                    </button>
+                </div>
+                {courseError && (
+                    <div style={{ color: 'red', fontSize: '0.8rem', marginTop: '4px' }}>
+                        {courseError}
+                    </div>
+                )}
+            </form>
+
 
             <div className="buttonContainer">
                 <Link href="/Page_CourseForm">
